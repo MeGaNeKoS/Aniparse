@@ -1,5 +1,4 @@
-#Aniparse
-=======
+# Aniparse
 
 Aniparse is a Python library for parsing anime video filenames. It's simple to use, and it's based on the C++
 library `Anitomy <https://github.com/erengy/anitomy>` with a lot of improvement.
@@ -216,3 +215,4 @@ The options contain the following attributes:
 | title_before_episode | boolean         | If the anime title should be before the episode number or not.  | True              |
 
 ## License
+*Aniparse* is licensed under [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/2.0/FAQ/).
