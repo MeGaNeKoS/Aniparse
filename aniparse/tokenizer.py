@@ -110,7 +110,7 @@ class Tokenizer(Tokens):
 
                     else:
                         try:
-                            if char == last_seen[-1]:
+                            if char == expected[-1]:
                                 last_seen.pop()
                                 expected.pop()
                         except IndexError:

@@ -106,18 +106,18 @@ table = [
         "anime_title": "Cyborg 009",
         "anime_year": 1968,
         "episode_number": 6,
+        "episode_prefix": "episode",
         "file_checksum": "30C15D62",
         "file_extension": "mp4",
         "file_name": "Cyborg 009 (1968) [TSHS] episode 06 [30C15D62].mp4",
-        "release_group": "TSHS",
-        "episode_prefix": "episode"
+        "release_group": "TSHS"
     },
     {
         "anime_title": "DRAMAtical Murder",
         "episode_number": 1,
+        "episode_prefix": "Episode",
         "episode_title": "Data 01 Login",
-        "file_name": "DRAMAtical Murder Episode 1 - Data_01_Login",
-        "episode_prefix": "Episode"
+        "file_name": "DRAMAtical Murder Episode 1 - Data_01_Login"
     },
     {
         "anime_title": "Detective Conan",
@@ -155,9 +155,9 @@ table = [
     },
     {
         "episode_number": 1,
+        "episode_prefix": "Ep.",
         "episode_title": "The Boy in the Iceberg",
-        "file_name": "Ep. 01 - The Boy in the Iceberg",
-        "episode_prefix": "Ep."
+        "file_name": "Ep. 01 - The Boy in the Iceberg"
     },
     {
         "anime_title": "Evangelion Shin Gekijouban Q",
@@ -230,24 +230,24 @@ table = [
         "anime_title": "Fairy Tail",
         "episode_number": 32,
         "episode_number_alt": 83,
-        "episode_title": "Tartaros Arc Iron Fist of the Fire Dragon",
-        "file_name": "Fairy Tail - S06E32 - Tartaros Arc Iron Fist of the Fire Dragon [Episode 83]",
         "episode_prefix": [
             "E",
             "Episode"
-        ]
+        ],
+        "episode_title": "Tartaros Arc Iron Fist of the Fire Dragon",
+        "file_name": "Fairy Tail - S06E32 - Tartaros Arc Iron Fist of the Fire Dragon [Episode 83]"
     },
     {
         "anime_title": "Fate Stay Night",
         "episode_number": 5,
+        "episode_prefix": "Ep",
         "episode_title": "The Two Magi Part1",
         "file_extension": "mkv",
         "file_name": "Fate_Stay_Night_Ep05_The_Two_Magi_Part1_[720p,BluRay,x264]_-_THORA.mkv",
         "release_group": "THORA",
         "source": "BluRay",
         "video_resolution": "720p",
-        "video_term": "x264",
-        "episode_prefix": "Ep"
+        "video_term": "x264"
     },
     {
         "anime_title": "Gekkan Shoujo Nozaki-kun",
@@ -262,6 +262,7 @@ table = [
             "5.1"
         ],
         "episode_number": 5,
+        "episode_prefix": "Ep",
         "episode_title": "EXCAVATION",
         "file_extension": "mkv",
         "file_name": "Ghost_in_the_Shell_Stand_Alone_Complex_2nd_GIG_Ep05v2_EXCAVATION_[720p,HDTV,x264,AAC_5.1]_-_THORA.mkv",
@@ -269,8 +270,7 @@ table = [
         "release_version": 2,
         "source": "HDTV",
         "video_resolution": "720p",
-        "video_term": "x264",
-        "episode_prefix": "Ep"
+        "video_term": "x264"
     },
     {
         "anime_title": "Ghost in the Shell Stand Alone Complex 2nd GIG",
@@ -279,14 +279,14 @@ table = [
             "5.1"
         ],
         "episode_number": 6,
+        "episode_prefix": "Ep",
         "episode_title": "Pu239",
         "file_extension": "mkv",
         "file_name": "Ghost_in_the_Shell_Stand_Alone_Complex_2nd_GIG_Ep06_Pu239_[720p,HDTV,x264,AAC_5.1]_-_THORA.mkv",
         "release_group": "THORA",
         "source": "HDTV",
         "video_resolution": "720p",
-        "video_term": "x264",
-        "episode_prefix": "Ep"
+        "video_term": "x264"
     },
     {
         "anime_title": "Gin'iro no Kami no Agito",
@@ -327,16 +327,16 @@ table = [
     {
         "anime_title": "Juuni Kokki",
         "episode_number": 5,
+        "episode_prefix": "Ep.",
         "file_extension": "avi",
-        "file_name": "Juuni Kokki Ep.5.avi",
-        "episode_prefix": "Ep."
+        "file_name": "Juuni Kokki Ep.5.avi"
     },
     {
         "anime_title": "Juuni Kokki",
         "episode_number": 5,
+        "episode_prefix": "Ep.",
         "file_extension": "avi",
-        "file_name": "Juuni.Kokki.Ep.5.avi",
-        "episode_prefix": "Ep."
+        "file_name": "Juuni.Kokki.Ep.5.avi"
     },
     {
         "anime_title": "Juuousei",
@@ -352,26 +352,26 @@ table = [
     {
         "anime_title": "K-ON!!",
         "episode_number": 8,
+        "episode_prefix": "Ep",
         "episode_title": "Career Plan!",
         "file_extension": "mkv",
         "file_name": "K-ON!!_Ep08_Career_Plan!_[1080p,BluRay,x264]_-_THORA.mkv",
         "release_group": "THORA",
         "source": "BluRay",
         "video_resolution": "1080p",
-        "video_term": "x264",
-        "episode_prefix": "Ep"
+        "video_term": "x264"
     },
     {
         "anime_title": "K-ON!",
         "episode_number": 3,
+        "episode_prefix": "Ep",
         "episode_title": "Training!",
         "file_extension": "mkv",
         "file_name": "K-ON!_Ep03_Training!_[1080p,BluRay,x264]_-_THORA.mkv",
         "release_group": "THORA",
         "source": "BluRay",
         "video_resolution": "1080p",
-        "video_term": "x264",
-        "episode_prefix": "Ep"
+        "video_term": "x264"
     },
     {
         "anime_title": "Kotonoha no Niwa",
@@ -430,14 +430,14 @@ table = [
         "anime_season_prefix": "Season",
         "anime_title": "Mobile Suit Gundam 00",
         "episode_number": 7,
+        "episode_prefix": "Ep",
         "episode_title": "A Reunion and a Parting",
         "file_extension": "mkv",
         "file_name": "Mobile_Suit_Gundam_00_Season_2_Ep07_A_Reunion_and_a_Parting_[1080p,BluRay,x264]_-_THORA.mkv",
         "release_group": "THORA",
         "source": "BluRay",
         "video_resolution": "1080p",
-        "video_term": "x264",
-        "episode_prefix": "Ep"
+        "video_term": "x264"
     },
     {
         "anime_title": "Neko no Ongaeshi",
@@ -468,12 +468,12 @@ table = [
         "anime_season_prefix": "S",
         "anime_title": "Noragami",
         "episode_number": 6,
-        "episode_title": "What Must Be Done",
-        "file_name": "Noragami - S02E06 - What Must Be Done [Episode 6]",
         "episode_prefix": [
             "E",
             "Episode"
-        ]
+        ],
+        "episode_title": "What Must Be Done",
+        "file_name": "Noragami - S02E06 - What Must Be Done [Episode 6]"
     },
     {
         "anime_season": 2,
@@ -535,9 +535,9 @@ table = [
     {
         "anime_title": "Tsuredure Children",
         "episode_number": 1,
+        "episode_prefix": "Episódio",
         "episode_title": "Confession",
-        "file_name": "Tsuredure Children Epis\u00f3dio 1 \u2013 Confession",
-        "episode_prefix": "Epis\u00f3dio"
+        "file_name": "Tsuredure Children Episódio 1 – Confession"
     },
     {
         "file_name": "Vol.01",
@@ -549,11 +549,11 @@ table = [
         "anime_season_prefix": "S",
         "anime_title": "Nintama Rantarou",
         "episode_number": 1821,
+        "episode_prefix": "E",
         "episode_title": "Buddhist Priest-sama is a Ninja",
         "file_extension": "mkv",
-        "file_name": "[(\u00b4\u2022 \u03c9 \u2022`)] Nintama Rantarou - S23E1821 - Buddhist Priest-sama is a Ninja.mkv",
-        "release_group": "(\u00b4\u2022 \u03c9 \u2022`)",
-        "episode_prefix": "E"
+        "file_name": "[(´• ω •`)] Nintama Rantarou - S23E1821 - Buddhist Priest-sama is a Ninja.mkv",
+        "release_group": "(´• ω •`)"
     },
     {
         "anime_season": 1,
@@ -561,14 +561,14 @@ table = [
         "anime_title": "Somali and the Forest Spirit",
         "audio_term": "AAC",
         "episode_number": 1,
+        "episode_prefix": "E",
         "file_checksum": "BB7C6531",
         "file_extension": "mkv",
         "file_name": "[0x539] Somali and the Forest Spirit - S01E01 (WEB 1080p Hi10P AAC) [BB7C6531].mkv",
         "other": "WEB",
         "release_group": "0x539",
         "video_resolution": "1080p",
-        "video_term": "Hi10P",
-        "episode_prefix": "E"
+        "video_term": "Hi10P"
     },
     {
         "anime_title": "RWBY",
@@ -632,6 +632,7 @@ table = [
         "anime_type": "Preview",
         "audio_term": "FLAC",
         "episode_number": 1,
+        "episode_prefix": "Ep",
         "file_extension": "mkv",
         "file_name": "[ANE] Yosuga no Sora - Ep01 Preview (Yorihime ver) [BDRip 1080p x264 FLAC].mkv",
         "other": [
@@ -641,8 +642,7 @@ table = [
         "release_group": "ANE",
         "source": "BDRip",
         "video_resolution": "1080p",
-        "video_term": "x264",
-        "episode_prefix": "Ep"
+        "video_term": "x264"
     },
     {
         "anime_title": "Ushio to Tora (TV)",
@@ -750,10 +750,10 @@ table = [
         ]
     },
     {
-        "anime_title": "Magical\u2606Star Kanon 100% OVA",
+        "anime_title": "Magical☆Star Kanon 100% OVA",
         "file_checksum": "E9F43685",
         "file_extension": "mkv",
-        "file_name": "[CMS] Magical\u2606Star Kanon 100% OVA[DVD][E9F43685].mkv",
+        "file_name": "[CMS] Magical☆Star Kanon 100% OVA[DVD][E9F43685].mkv",
         "release_group": "CMS",
         "source": "DVD"
     },
@@ -812,10 +812,10 @@ table = [
             1,
             13
         ],
-        "file_name": "[Coalgirls]_White_Album_1-13_(1280\u00d7720_Blu-Ray_FLAC)",
+        "file_name": "[Coalgirls]_White_Album_1-13_(1280×720_Blu-Ray_FLAC)",
         "release_group": "Coalgirls",
         "source": "Blu-Ray",
-        "video_resolution": "1280\u00d7720"
+        "video_resolution": "1280×720"
     },
     {
         "anime_title": "Last Exile ~Fam, The Silver Wing~",
@@ -877,6 +877,7 @@ table = [
     {
         "anime_title": "Oreshura",
         "episode_number": 1,
+        "episode_prefix": "#",
         "episode_title": "The Start Of High School Life Is A War Zone",
         "file_checksum": "211375E6",
         "file_extension": "mkv",
@@ -884,8 +885,7 @@ table = [
         "release_group": "DmonHiro",
         "release_version": 2,
         "source": "BD",
-        "video_resolution": "720p",
-        "episode_prefix": "#"
+        "video_resolution": "720p"
     },
     {
         "anime_title": "Nogizaka Haruka no Himitsu Purezza",
@@ -916,13 +916,13 @@ table = [
         "anime_title": "Devilman Crybaby",
         "audio_term": "Multi-Audio",
         "episode_number": 4,
+        "episode_prefix": "E",
         "file_checksum": "24B349D4",
         "file_extension": "mkv",
         "file_name": "[DragsterPS] Devilman Crybaby S01E04 [720p] [Multi-Audio] [Multi-Subs] [24B349D4].mkv",
         "release_group": "DragsterPS",
         "subtitles": "Multi-Subs",
-        "video_resolution": "720p",
-        "episode_prefix": "E"
+        "video_resolution": "720p"
     },
     {
         "anime_title": "Kore wa Zombie desu ka",
@@ -939,22 +939,22 @@ table = [
     {
         "anime_title": "Kore wa Zombie desu ka",
         "episode_number": 2,
+        "episode_prefix": "Episode",
         "file_extension": "mkv",
         "file_name": "[Edomae Subs] Kore wa Zombie desu ka  Episode 2.mkv",
-        "release_group": "Edomae Subs",
-        "episode_prefix": "Episode"
+        "release_group": "Edomae Subs"
     },
     {
         "anime_title": "Sora no Woto",
         "audio_term": "AAC",
         "episode_number": 7.5,
+        "episode_prefix": "EP",
         "file_checksum": "C37580F8",
         "file_extension": "mkv",
         "file_name": "[Elysium]Sora.no.Woto.EP07.5(BD.720p.AAC)[C37580F8].mkv",
         "release_group": "Elysium",
         "source": "BD",
-        "video_resolution": "720p",
-        "episode_prefix": "EP"
+        "video_resolution": "720p"
     },
     {
         "anime_title": "One Piece",
@@ -1056,12 +1056,12 @@ table = [
     {
         "anime_title": "Bakuman",
         "episode_number": 1,
+        "episode_prefix": "E",
         "file_extension": "mkv",
         "file_name": "[FaggotryRaws] Bakuman - 01 (NHK E 848x480).mkv",
         "other": "NHK",
         "release_group": "FaggotryRaws",
-        "video_resolution": "848x480",
-        "episode_prefix": "E"
+        "video_resolution": "848x480"
     },
     {
         "anime_title": "Nodame Cantabile Finale",
@@ -1089,11 +1089,11 @@ table = [
         "anime_title": "Koi Kaze",
         "audio_term": "Dual Audio",
         "episode_number": 1,
+        "episode_prefix": "Ep",
         "file_checksum": "c13cefe0",
         "file_extension": "mkv",
         "file_name": "[GrimRipper] Koi Kaze [Dual Audio] Ep01 (c13cefe0).mkv",
-        "release_group": "GrimRipper",
-        "episode_prefix": "Ep"
+        "release_group": "GrimRipper"
     },
     {
         "anime_title": "Evangelion 3.0 You Can (Not) Redo",
@@ -1260,15 +1260,23 @@ table = [
         "release_group": "Infantjedi"
     },
     {
+        "anime_title": "Heavy Object",
+        "anime_type": "NCED",
+        "episode_number": 1,
+        "file_extension": "mkv",
+        "file_name": "[Judas[ Heavy Object - NCED 01.mkv",
+        "release_group": "Judas"
+    },
+    {
         "anime_season": 1,
         "anime_season_prefix": "S",
         "anime_title": "Aharen-san wa Hakarenai",
         "episode_number": 6,
+        "episode_prefix": "E",
         "file_extension": "mkv",
         "file_name": "[Judas] Aharen-san wa Hakarenai - S01E06v2.mkv",
         "release_group": "Judas",
-        "release_version": 2,
-        "episode_prefix": "E"
+        "release_version": 2
     },
     {
         "anime_title": "One Piece",
@@ -1291,6 +1299,7 @@ table = [
     {
         "anime_title": "D.C.II Da Capo II",
         "episode_number": 1,
+        "episode_prefix": "Ep",
         "file_checksum": "a1fc58a7",
         "file_extension": "mkv",
         "file_name": "[Jumonji-Giri]_[Shinsen-Subs][ASF]_D.C.II_Da_Capo_II_Ep01_(a1fc58a7).mkv",
@@ -1298,8 +1307,7 @@ table = [
             "Shinsen-Subs",
             "ASF"
         ],
-        "release_group": "Jumonji-Giri",
-        "episode_prefix": "Ep"
+        "release_group": "Jumonji-Giri"
     },
     {
         "anime_title": "One Piece",
@@ -1323,6 +1331,7 @@ table = [
         "anime_title": "Uchuu no Stellvia",
         "audio_term": "AAC",
         "episode_number": 14,
+        "episode_prefix": "ep",
         "file_checksum": "06EE7355",
         "file_extension": "mkv",
         "file_name": "[Kira-Fansub] Uchuu no Stellvia ep 14 (BD H264 1280x960 24fps AAC) [06EE7355].mkv",
@@ -1332,8 +1341,7 @@ table = [
         "video_term": [
             "H264",
             "24fps"
-        ],
-        "episode_prefix": "ep"
+        ]
     },
     {
         "anime_title": "1001 Nights",
@@ -1358,7 +1366,7 @@ table = [
         "episode_number": 100,
         "file_checksum": "D035A39F",
         "file_extension": "mkv",
-        "file_name": "[Mezashite] Aikatsu! \u2012 100 [D035A39F].mkv",
+        "file_name": "[Mezashite] Aikatsu! ‒ 100 [D035A39F].mkv",
         "release_group": "Mezashite"
     },
     {
@@ -1382,6 +1390,7 @@ table = [
         "anime_title": "Tiger & Bunny",
         "audio_term": "AAC",
         "episode_number": 1,
+        "episode_prefix": "#",
         "episode_title": "All's well that ends well.",
         "file_checksum": "4A9AB85F",
         "file_extension": "mkv",
@@ -1390,8 +1399,7 @@ table = [
         "release_group": "NinjaPanda",
         "release_version": 3,
         "video_resolution": "1080p",
-        "video_term": "Hi10P",
-        "episode_prefix": "#"
+        "video_term": "Hi10P"
     },
     {
         "anime_title": "Tamayura ~graduation photo~ Movie Part 1",
@@ -1407,45 +1415,45 @@ table = [
         "anime_year": 2012,
         "audio_term": "AAC",
         "episode_number": 18,
+        "episode_prefix": "episode",
         "file_checksum": "1F56D642",
         "file_name": "[Nubles] Space Battleship Yamato 2199 (2012) episode 18 (720p 10 bit AAC)[1F56D642]",
         "release_group": "Nubles",
         "video_resolution": "720p",
-        "video_term": "10 bit",
-        "episode_prefix": "episode"
+        "video_term": "10 bit"
     },
     {
         "anime_title": "Space Battleship Yamato 2199",
         "anime_year": 2012,
         "audio_term": "AAC",
         "episode_number": 18,
+        "episode_prefix": "episode",
         "file_checksum": "BA70BA9C",
         "file_name": "[Nubles] Space Battleship Yamato 2199 (2012) episode 18 (720p 8 bit AAC)[BA70BA9C]",
         "release_group": "Nubles",
         "video_resolution": "720p",
-        "video_term": "8 bit",
-        "episode_prefix": "episode"
+        "video_term": "8 bit"
     },
     {
         "anime_title": "Diebuster",
         "audio_term": "AC3",
         "episode_number": 1,
+        "episode_prefix": "EP",
         "file_checksum": "82E36A36",
         "file_extension": "mkv",
         "file_name": "[R-R] Diebuster.EP1 (720p.Hi10p.AC3) [82E36A36].mkv",
         "release_group": "R-R",
         "video_resolution": "720p",
-        "video_term": "Hi10p",
-        "episode_prefix": "EP"
+        "video_term": "Hi10p"
     },
     {
         "anime_title": "Sakura Taisen New York NY",
         "episode_number": 2,
+        "episode_prefix": "Ep",
         "file_checksum": "1590D378",
         "file_extension": "avi",
         "file_name": "[RNA]_Sakura_Taisen_New_York_NY_Ep_2_[1590D378].avi",
-        "release_group": "RNA",
-        "episode_prefix": "Ep"
+        "release_group": "RNA"
     },
     {
         "anime_title": "Mezzo(DSA)",
@@ -1461,6 +1469,7 @@ table = [
         "anime_title": "Persona 4 The Animation",
         "audio_term": "FLAC",
         "episode_number": 13,
+        "episode_prefix": "Episode",
         "episode_title": "A Stormy Summer Vacation Part 1",
         "file_checksum": "8A45634B",
         "file_extension": "mkv",
@@ -1472,8 +1481,7 @@ table = [
         "release_group": "Raizel",
         "source": "BD",
         "video_resolution": "1080p",
-        "video_term": "Hi10p",
-        "episode_prefix": "Episode"
+        "video_term": "Hi10p"
     },
     {
         "anime_title": "Gift ~eternal rainbow~",
@@ -1498,6 +1506,7 @@ table = [
         "anime_title": "Serial Experiments Lain",
         "audio_term": "Dual-Audio",
         "episode_number": 1,
+        "episode_prefix": "E",
         "file_extension": "mkv",
         "file_name": "[Reaktor] Serial Experiments Lain - E01 [1080p][x265][10-bit][Dual-Audio].mkv",
         "release_group": "Reaktor",
@@ -1505,8 +1514,7 @@ table = [
         "video_term": [
             "x265",
             "10-bit"
-        ],
-        "episode_prefix": "E"
+        ]
     },
     {
         "anime_title": "No.6",
@@ -1583,6 +1591,7 @@ table = [
     {
         "anime_title": "Kidou Senshi Gundam UC Unicorn",
         "episode_number": 2,
+        "episode_prefix": "episode",
         "file_extension": "mp4",
         "file_name": "[TV-J] Kidou Senshi Gundam UC Unicorn - episode.02 [BD 1920x1080 h264+AAC(5.1ch JP+EN) +Sub(JP-EN-SP-FR-CH) Chap].mp4",
         "other": [
@@ -1596,8 +1605,7 @@ table = [
         "release_group": "TV-J",
         "source": "BD",
         "video_resolution": "1920x1080",
-        "video_term": "h264",
-        "episode_prefix": "episode"
+        "video_term": "h264"
     },
     {
         "anime_title": "Toradora!",
@@ -1828,6 +1836,7 @@ table = [
     {
         "anime_title": "Nazca",
         "episode_number": 1,
+        "episode_prefix": "episode",
         "file_extension": "mkv",
         "file_name": "[kito].Nazca.episode.01.DVDRip.[x264.He-aac.{Jpn}+Sub{Fr}].mkv",
         "other": [
@@ -1837,8 +1846,7 @@ table = [
         ],
         "release_group": "kito",
         "source": "DVDRip",
-        "video_term": "x264",
-        "episode_prefix": "episode"
+        "video_term": "x264"
     },
     {
         "anime_title": "Natsume Yuujinchou Shi",
@@ -1856,6 +1864,23 @@ table = [
         "volume_prefix": [
             "Vol.",
             "Vol."
+        ]
+    },
+    {
+        "anime_title": "Elfen Lied",
+        "audio_term": [
+            "5.1",
+            "AAC"
+        ],
+        "episode_number": 12,
+        "file_extension": "mkv",
+        "file_name": "]AkihitoSubs] Elfen Lied - 12 [BD 1920x1080 x265 10Bit 5.1 AAC].mkv",
+        "release_group": "AkihitoSubs",
+        "source": "BD",
+        "video_resolution": "1920x1080",
+        "video_term": [
+            "x265",
+            "10Bit"
         ]
     }
 ]
