@@ -508,8 +508,10 @@ class Parser(Tokenizer, ParserNumber):
 
             tokens = self.get_list(begin=token_start, end=token_episode)
 
+            multi = False
             for token in tokens:
                 if token.e_category == ElementCategory.RANGE_SEPARATOR:
+                    multi = True
                     break
                 if token.e_category == ElementCategory.EPISODE_NUMBER:
                     if float(token_start_episode.content) == float(token.content):
@@ -522,6 +524,30 @@ class Parser(Tokenizer, ParserNumber):
 
                     self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.EPISODE_NUMBER_ALT)
                     break
+
+            if multi:
+                not_enclosed_tokens = [token_start_episode]
+                enclosed_tokens = []
+                for token in tokens:
+                    if token.e_category == ElementCategory.EPISODE_NUMBER:
+                        if token.enclosed:
+                            enclosed_tokens.append(token)
+                        else:
+                            not_enclosed_tokens.append(token)
+
+                if len(enclosed_tokens) == len(not_enclosed_tokens) == 2:
+
+                    if self.options['eps_lower_than_alt']:
+                        for idx, token in enumerate(enclosed_tokens):
+                            if float(enclosed_tokens[idx].content) > float(not_enclosed_tokens[idx].content):
+                                self.set_token_element(token, TokenCategory.IDENTIFIER,
+                                                       ElementCategory.EPISODE_NUMBER_ALT)
+                            else:
+                                self.set_token_element(not_enclosed_tokens[idx], TokenCategory.IDENTIFIER,
+                                                       ElementCategory.EPISODE_NUMBER_ALT)
+                    else:
+                        for token in enclosed_tokens:
+                            self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.EPISODE_NUMBER_ALT)
 
         # Fill the unknown tokens with the keywords
         for token in self.get_list(TokenFlags.UNKNOWN):

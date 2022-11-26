@@ -1299,6 +1299,28 @@ table = [
         "release_group": "Judas"
     },
     {
+        "anime_season": 1,
+        "anime_season_prefix": "S",
+        "anime_title": "Gintama",
+        "episode_number": [1, 2],
+        "episode_number_alt": [1, 2],
+        "episode_prefix": ["E", "E"],
+        "file_extension": "mkv",
+        "file_name": "[Judas] Gintama - S01E01-E02 (001-002).mkv",
+        "release_group": "Judas"
+    },
+    {
+        "anime_season": 2,
+        "anime_season_prefix": "S",
+        "anime_title": "Gintama",
+        "episode_number": [1, 2],
+        "episode_number_alt": [25, 26],
+        "episode_prefix": ["E", "E"],
+        "file_extension": "mkv",
+        "file_name": "[Judas] Gintama - S02E01-E02 (025-026).mkv",
+        "release_group": "Judas"
+    },
+    {
         "anime_title": "One Piece",
         "episode_number": 1009,
         "file_extension": "mkv",
