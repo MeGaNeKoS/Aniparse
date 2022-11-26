@@ -570,7 +570,7 @@ class Parser(Tokenizer, ParserNumber):
         tokens = self.get_list(elements=ElementCategory.EPISODE_TITLE)
         real_token = []
         for token in tokens:
-            if parser_helper.is_dash_character(token.content):
+            if not token.content.strip(" " + parser_helper.DASHES):
                 continue
             if token.t_category in [TokenCategory.DELIMITER, TokenCategory.BRACKET]:
                 continue
