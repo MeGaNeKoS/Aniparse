@@ -358,6 +358,7 @@ class Parser(Tokenizer, ParserNumber):
         - Video resolution
         - Any identifiable keywords, keywords.options["default"]
         """
+        prev = None
         for token in self.get_list(TokenFlags.UNKNOWN):
             word = token.content
             word = word.strip(' -')
@@ -388,19 +389,19 @@ class Parser(Tokenizer, ParserNumber):
                 if not keyword.options.identifiable and not token.enclosed:
                     continue
 
-                if (element == ElementCategory.ANIME_SEASON_PREFIX
-                        and self.is_anime_season_keyword(token)):
-
-                    self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.ANIME_SEASON_PREFIX)
-
+                if element == ElementCategory.ANIME_SEASON_PREFIX:
+                    if self.is_anime_season_keyword(token):
+                        self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.ANIME_SEASON_PREFIX)
+                    continue
                 elif (element == ElementCategory.EPISODE_PREFIX
                       and keyword.options.valid):
                     if self.is_extent_keyword(token, ElementCategory.EPISODE_NUMBER, prefix=True):
                         self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.EPISODE_PREFIX)
-
+                    continue
                 elif element == ElementCategory.VOLUME_PREFIX:
                     if self.is_extent_keyword(token, ElementCategory.VOLUME_NUMBER, prefix=True):
                         self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.VOLUME_PREFIX)
+                    continue
                 elif element == ElementCategory.RELEASE_VERSION:
                     # this is probably a version number
                     token.content = word[0]
@@ -422,6 +423,8 @@ class Parser(Tokenizer, ParserNumber):
                     self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.OTHER)
                     continue
                 elif element == ElementCategory.RELEASE_INFORMATION:
+                    if prev and prev.content.lower() in ["the"]:
+                        continue
                     self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.RELEASE_INFORMATION)
                     continue
                 elif element == ElementCategory.SOURCE:
@@ -433,12 +436,9 @@ class Parser(Tokenizer, ParserNumber):
                 elif element == ElementCategory.VIDEO_TERM:
                     self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.VIDEO_TERM)
                     continue
-
                 # last resort to avoid false positives
                 if token.enclosed:
                     self.set_token_element(token, TokenCategory.IDENTIFIER, element)
-                else:
-                    continue
             else:
                 # we could have multiple valid crc and resolution keywords.
                 if parser_helper.is_crc32(word):
@@ -449,6 +449,7 @@ class Parser(Tokenizer, ParserNumber):
             if element != ElementCategory.UNKNOWN:
                 if keyword is None or keyword.options.identifiable:
                     self.set_token_element(token, TokenCategory.IDENTIFIER, element)
+            prev = token
 
     def search_for_release_group(self) -> None:
         """
@@ -525,16 +526,16 @@ class Parser(Tokenizer, ParserNumber):
                     self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.EPISODE_NUMBER_ALT)
                     break
 
-            if multi:
-                not_enclosed_tokens = [token_start_episode]
-                enclosed_tokens = []
-                for token in tokens:
-                    if token.e_category == ElementCategory.EPISODE_NUMBER:
-                        if token.enclosed:
-                            enclosed_tokens.append(token)
-                        else:
-                            not_enclosed_tokens.append(token)
+            not_enclosed_tokens = [token_start_episode]
+            enclosed_tokens = []
+            for token in tokens:
+                if token.e_category in [ElementCategory.EPISODE_NUMBER, ElementCategory.EPISODE_NUMBER_ALT]:
+                    if token.enclosed:
+                        enclosed_tokens.append(token)
+                    else:
+                        not_enclosed_tokens.append(token)
 
+            if multi:
                 if len(enclosed_tokens) == len(not_enclosed_tokens) == 2:
 
                     if self.options['eps_lower_than_alt']:

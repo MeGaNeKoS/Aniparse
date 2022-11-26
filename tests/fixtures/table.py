@@ -645,6 +645,19 @@ table = [
         "video_term": "x264"
     },
     {
+        "anime_title": "Shingeki no Kyojin (The Final Season)",
+        "audio_term": "Dual Audio",
+        "episode_number": 13,
+        "episode_number_alt": 72,
+        "file_extension": "mkv",
+        "file_name": "[AnimeRG] Shingeki no Kyojin (The Final Season) - 13 "
+                     "[1080p 10bit Dual Audio] (Attack on Titan - 72).mkv",
+        "other": ["Attack", "on", "Titan"],
+        "release_group": "AnimeRG",
+        "video_resolution": "1080p",
+        "video_term": "10bit"
+    },
+    {
         "anime_title": "Ushio to Tora (TV)",
         "episode_number": 2,
         "file_extension": "mkv",
