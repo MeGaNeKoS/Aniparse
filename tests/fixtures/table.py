@@ -1279,6 +1279,14 @@ table = [
         "release_version": 2
     },
     {
+        "anime_title": "Boruto",
+        "anime_type": "OVA",
+        "episode_title": "The Day Naruto Became Hokage",
+        "file_name": "[Judas] Boruto - OVA - The Day Naruto Became Hokage.mkv",
+        "file_extension": "mkv",
+        "release_group": "Judas"
+    },
+    {
         "anime_title": "One Piece",
         "episode_number": 1009,
         "file_extension": "mkv",
