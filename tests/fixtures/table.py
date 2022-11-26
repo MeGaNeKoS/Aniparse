@@ -1279,6 +1279,12 @@ table = [
         "release_version": 2
     },
     {
+        "anime_title": "Black Clover Jump Special Anime Festa 2018",
+        "file_name": "[Judas] Black Clover - Jump Special Anime Festa 2018.mkv",
+        "file_extension": "mkv",
+        "release_group": "Judas"
+    },
+    {
         "anime_title": "Boruto",
         "anime_type": "OVA",
         "episode_title": "The Day Naruto Became Hokage",

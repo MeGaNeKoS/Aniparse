@@ -527,8 +527,21 @@ class ParserNumber(Pattern):
                                 or (previous_token.t_category == next_token.t_category == TokenCategory.BRACKET
                                     and self.counter.get(ElementCategory.EPISODE_NUMBER))):
                             prefix = True
-                    else:  # The number are at the end of the string
-                        prefix = True
+                    else:
+                        # 02 is most likely an episode number
+                        # but 2 is not guaranteed
+                        try:
+                            is_number = float(token.content)
+                            if is_number.is_integer():
+                                if str(int(is_number)) != token.content:
+                                    prefix = True
+                            else:
+                                if str(is_number) != token.content:
+                                    prefix = True
+                        except ValueError:
+                            # in case it 04v2, then it most likely an episode number
+                            prefix = True
+
                 if self.is_match_number_patterns(token, token.content, ElementCategory.EPISODE_NUMBER, prefix):
                     is_found = True
         return is_found
