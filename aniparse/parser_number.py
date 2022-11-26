@@ -213,7 +213,7 @@ class Pattern(EpisodePattern, VolumePattern):
         if parser_helper.is_number(word) and not prefix:
             # If the word only a number and the prefix is not set, then try to check the previous token
             previous_token = self.find_prev(token, TokenFlags.IDENTIFIER | TokenFlags.UNKNOWN)
-            if previous_token.content.lower() in ["part"]:
+            if previous_token.content.lower() in ["part", "movie"]:
                 return False
             if previous_token.t_category in [TokenCategory.DELIMITER, TokenCategory.BRACKET]:
                 self.set_token_element(previous_token, TokenCategory.INVALID, ElementCategory.UNKNOWN)
@@ -479,10 +479,18 @@ class ParserNumber(Pattern):
 
             # Ignore if the previous token is "Movie" or "Part"
             previous_token = self.find_prev(token, TokenFlags.NOT_DELIMITER)
-            if previous_token and str(previous_token.content).lower() in ["movie", "part"]:
+            if previous_token and str(previous_token.content).lower() in ["part"]:
                 continue
+            if previous_token.content.lower() in ["movie"]:
+                pprev_token = self.find_prev(previous_token, TokenFlags.IDENTIFIER | TokenFlags.UNKNOWN)
+                if pprev_token.content.lower() == "the":
+                    return False
+                if token.content.isdigit():
+                    self.set_token_element(previous_token, TokenCategory.IDENTIFIER, ElementCategory.ANIME_TYPE)
+                    self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.EPISODE_NUMBER)
+                    return True
             previous_token = self.find_prev(token, TokenFlags.UNKNOWN | TokenFlags.BRACKET)
-            if not previous_token:
+            if not previous_token or previous_token == token:  #, because previous_token most likely same as token
                 continue
             if not parser_helper.is_dash_character(previous_token.content):
                 continue

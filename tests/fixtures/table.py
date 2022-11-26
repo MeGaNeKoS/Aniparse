@@ -1293,6 +1293,12 @@ table = [
         "release_group": "Judas"
     },
     {
+        "anime_title": "Card Captor Sakura The Movie 2 The Sealed Card",
+        "file_extension": "mkv",
+        "file_name": "[Judas] Card Captor Sakura - The Movie 2 - The Sealed Card.mkv",
+        "release_group": "Judas"
+    },
+    {
         "anime_title": "One Piece",
         "episode_number": 1009,
         "file_extension": "mkv",
