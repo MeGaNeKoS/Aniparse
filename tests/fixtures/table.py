@@ -1109,6 +1109,12 @@ table = [
         "release_group": "GrimRipper"
     },
     {
+        "file_name": "[Hakata Ramen] Cells At Work! Special.mkv",
+        "file_extension": "mkv",
+        "release_group": "Hakata Ramen",
+        "anime_title": "Cells At Work! Special"
+    },
+    {
         "anime_title": "Evangelion 3.0 You Can (Not) Redo",
         "file_extension": "mp4",
         "file_name": "[Hakugetsu&MGRT][Evangelion 3.0 You Can (Not) Redo][480P][V0].mp4",

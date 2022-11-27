@@ -381,9 +381,10 @@ class Parser(Tokenizer, ParserNumber):
                     if element == ElementCategory.ANIME_TYPE:
                         previous_token = self.find_prev(token, TokenFlags.NOT_DELIMITER)
                         next_token = self.find_next(token, TokenFlags.NOT_DELIMITER)
-                        if ((parser_helper.is_dash_character(previous_token.content)
-                                and parser_helper.is_dash_character(next_token.content))
-                                or previous_token.content == next_token.content):
+                        if parser_helper.is_dash_character(previous_token.content):
+                            if not next_token or parser_helper.is_dash_character(next_token.content):
+                                self.set_token_element(token, TokenCategory.IDENTIFIER, element)
+                        elif next_token and previous_token.content == next_token.content:
                             self.set_token_element(token, TokenCategory.IDENTIFIER, element)
                     continue
                 if not keyword.options.identifiable and not token.enclosed:
