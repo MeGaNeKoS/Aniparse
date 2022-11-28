@@ -213,7 +213,7 @@ class Pattern(EpisodePattern, VolumePattern):
         if parser_helper.is_potential_number(word) and not prefix:
             # If the word only a number and the prefix is not set, then try to check the previous token
             previous_token = self.find_prev(token, TokenFlags.IDENTIFIER | TokenFlags.UNKNOWN)
-            if previous_token.content.lower() in ["part", "movie"]:
+            if previous_token.content.lower() in ["part"]:
                 return False
             if previous_token.t_category in [TokenCategory.DELIMITER, TokenCategory.BRACKET]:
                 self.set_token_element(previous_token, TokenCategory.INVALID, ElementCategory.UNKNOWN)
@@ -481,14 +481,6 @@ class ParserNumber(Pattern):
             previous_token = self.find_prev(token, TokenFlags.NOT_DELIMITER)
             if previous_token and str(previous_token.content).lower() in ["part"]:
                 continue
-            if previous_token.content.lower() in ["movie"]:
-                pprev_token = self.find_prev(previous_token, TokenFlags.IDENTIFIER | TokenFlags.UNKNOWN)
-                if pprev_token.content.lower() == "the":
-                    return False
-                if token.content.isdigit():
-                    self.set_token_element(previous_token, TokenCategory.IDENTIFIER, ElementCategory.ANIME_TYPE)
-                    self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.EPISODE_NUMBER)
-                    return True
             previous_token = self.find_prev(token, TokenFlags.UNKNOWN | TokenFlags.BRACKET)
             if not previous_token or previous_token == token:  #, because previous_token most likely same as token
                 continue
@@ -496,7 +488,7 @@ class ParserNumber(Pattern):
                 continue
             if token.content.isdigit():
                 self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.EPISODE_NUMBER)
-                return True
+                is_found = True
         return is_found
 
     def search_for_number_patterns(self, tokens: List[Token]) -> bool:
@@ -519,6 +511,8 @@ class ParserNumber(Pattern):
                 # if previous token is a dash, it is most likely an episode number
                 prefix = False
                 previous_token = self.find_prev(token, TokenFlags.NOT_DELIMITER)
+                keyword = self.keyword_manager.find(
+                    self.keyword_manager.normalize(previous_token.content))
                 prev_is_dash = parser_helper.is_dash_character(previous_token.content)
                 if prev_is_dash:
                     prefix = True
@@ -550,8 +544,15 @@ class ParserNumber(Pattern):
                             # in case it 04v2, then it most likely an episode number
                             prefix = True
 
+                    if not prefix:
+                        if keyword and keyword.e_category == ElementCategory.ANIME_TYPE:
+                            prefix = True
+
                 if self.is_match_number_patterns(token, token.content, ElementCategory.EPISODE_NUMBER, prefix):
                     is_found = True
+                    if prefix:
+                        if keyword and keyword.e_category == ElementCategory.ANIME_TYPE:
+                            self.set_token_element(previous_token, TokenCategory.IDENTIFIER, ElementCategory.ANIME_TYPE)
         return is_found
 
     def search_for_seperated_numbers(self, tokens: List[Token]) -> bool:

@@ -1038,8 +1038,8 @@ table = [
         "release_group": "FFF"
     },
     {
-        "anime_title": "Love Live! The School Idol Movie",
-        "anime_type": "PV",
+        "anime_title": "Love Live! The School Idol",
+        "anime_type": ["Movie", "PV"],
         "file_checksum": "D1A15D2C",
         "file_extension": "mkv",
         "file_name": "[FFF] Love Live! The School Idol Movie - PV [D1A15D2C].mkv",
@@ -1112,7 +1112,8 @@ table = [
         "file_name": "[Hakata Ramen] Cells At Work! Special.mkv",
         "file_extension": "mkv",
         "release_group": "Hakata Ramen",
-        "anime_title": "Cells At Work! Special"
+        "anime_title": "Cells At Work!",
+        "anime_type": "Special"
     },
     {
         "anime_title": "Evangelion 3.0 You Can (Not) Redo",
@@ -1313,6 +1314,16 @@ table = [
         "release_group": "Judas"
     },
     {
+        "anime_title": "Black Clover",
+        "anime_type": "NCOP",
+        "episode_number": 10,
+        "episode_part": "b",
+        "episode_title": "Black Catcher",
+        "file_name": "[Judas] Black Clover - NCOP 10b - Black Catcher.mkv",
+        "file_extension": "mkv",
+        "release_group": "Judas",
+    },
+    {
         "anime_title": "Boruto",
         "anime_type": "OVA",
         "episode_title": "The Day Naruto Became Hokage",
@@ -1321,9 +1332,28 @@ table = [
         "release_group": "Judas"
     },
     {
-        "anime_title": "Card Captor Sakura The Movie 2 The Sealed Card",
+        "anime_title": "Card Captor Sakura The Movie",
+        "episode_number": 2,
+        "episode_title": "The Sealed Card",
         "file_extension": "mkv",
         "file_name": "[Judas] Card Captor Sakura - The Movie 2 - The Sealed Card.mkv",
+        "release_group": "Judas"
+    },
+    {
+        "anime_title": "Code Geass",
+        "anime_type": "Movie",
+        "episode_number": 2,
+        "file_extension": "mkv",
+        "file_name": "[Judas] Code Geass Movie 02.mkv",
+        "release_group": "Judas"
+    },
+    {
+        "anime_title": "Code Geass",
+        "anime_type": "Movie",
+        "episode_number": 2,
+        "episode_title": "Lelouch of the Rebellion Transgression",
+        "file_extension": "mkv",
+        "file_name": "[Judas] Code Geass Movie 02 - Lelouch of the Rebellion - Transgression.mkv",
         "release_group": "Judas"
     },
     {
@@ -1346,6 +1376,13 @@ table = [
         "episode_prefix": ["E", "E"],
         "file_extension": "mkv",
         "file_name": "[Judas] Gintama - S02E01-E02 (025-026).mkv",
+        "release_group": "Judas"
+    },
+    {
+        "anime_title": "Granblue Fantasy",
+        "anime_type": "Clean Ending",
+        "file_extension": "mkv",
+        "file_name": "[Judas] Granblue Fantasy - Clean Ending.mkv",
         "release_group": "Judas"
     },
     {
@@ -1614,7 +1651,8 @@ table = [
         "video_term": "h264"
     },
     {
-        "anime_title": "AIKa ZERO OVA",
+        "anime_title": "AIKa ZERO",
+        "anime_type": "OVA",
         "audio_term": "Flac",
         "episode_number": 1,
         "file_checksum": "6730D40A",

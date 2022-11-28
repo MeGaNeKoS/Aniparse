@@ -192,8 +192,14 @@ class Parser(Tokenizer, ParserNumber):
             if keyword:
                 element = keyword.e_category
                 if element == ElementCategory.ANIME_TYPE:
-                    if token.content.upper() in ["ED", "NCED", "ENDING", "CLEAN ENDING",
-                                                 "OP", "NCOP", "OPENING", "CLEAN OPENING"]:
+                    if token.content.upper() in ["ED", "NCED", "ENDING",
+                                                 "OP", "NCOP", "OPENING"]:
+                        clean_token = self.find_prev(token, TokenFlags.UNKNOWN)
+                        if clean_token and clean_token.content.upper() == "CLEAN":
+                            token_end = self.find_prev(clean_token)
+                            token.content = f"{clean_token.content} {token.content}"
+                            self.remove_token(clean_token)
+                        self.set_token_element(clean_token, TokenCategory.IDENTIFIER, ElementCategory.ANIME_TYPE)
                         break
                     previous_token = self.find_prev(token, TokenFlags.NOT_DELIMITER)
                     if previous_token and parser_helper.is_dash_character(previous_token.content):
@@ -381,14 +387,18 @@ class Parser(Tokenizer, ParserNumber):
                     if element == ElementCategory.ANIME_TYPE:
                         previous_token = self.find_prev(token, TokenFlags.NOT_DELIMITER)
                         next_token = self.find_next(token, TokenFlags.NOT_DELIMITER)
-                        if parser_helper.is_dash_character(previous_token.content):
-                            if not next_token or parser_helper.is_dash_character(next_token.content):
-                                self.set_token_element(token, TokenCategory.IDENTIFIER, element)
+                        if not next_token:
+                            self.set_token_element(token, TokenCategory.IDENTIFIER, element)
+                        elif parser_helper.is_dash_character(next_token.content):
+                            self.set_token_element(token, TokenCategory.IDENTIFIER, element)
                         elif next_token and previous_token.content == next_token.content:
                             self.set_token_element(token, TokenCategory.IDENTIFIER, element)
                     continue
                 if not keyword.options.identifiable and not token.enclosed:
                     continue
+                if not keyword.options.valid:
+                    if not prev or not parser_helper.is_dash_character(prev.content):
+                        continue
 
                 if element == ElementCategory.ANIME_SEASON_PREFIX:
                     if self.is_anime_season_keyword(token):
