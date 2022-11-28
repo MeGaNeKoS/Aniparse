@@ -485,6 +485,20 @@ class ParserNumber(Pattern):
             if not previous_token or previous_token == token:  #, because previous_token most likely same as token
                 continue
             if not parser_helper.is_dash_character(previous_token.content):
+                next_token = self.find_next(token, TokenFlags.NOT_DELIMITER)
+                if next_token and parser_helper.is_dash_character(next_token.content):
+                    try:
+                        f_text = float(token.content)
+                        if f_text.is_integer():
+                            if str(int(f_text)) != token.content:
+                                self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.EPISODE_NUMBER)
+                                is_found = True
+                        elif str(f_text) != token.content:
+                            self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.EPISODE_NUMBER)
+                            is_found = True
+                    except ValueError:
+                        pass
+
                 continue
             if token.content.isdigit():
                 self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.EPISODE_NUMBER)

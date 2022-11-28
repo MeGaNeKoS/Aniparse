@@ -1386,6 +1386,20 @@ table = [
         "release_group": "Judas"
     },
     {
+        "anime_title": "Initial D Extra Stage",
+        "episode_number": 2,
+        "episode_title": "Sentimental White",
+        "file_extension": "mkv",
+        "file_name": "[Judas] Initial D - Extra Stage 02 - Sentimental White.mkv",
+        "release_group": "Judas"
+    },
+    {
+        "anime_title": "Initial D Extra Stage 2 Sentimental White",
+        "file_extension": "mkv",
+        "file_name": "[Judas] Initial D - Extra Stage 2 - Sentimental White.mkv",
+        "release_group": "Judas"
+    },
+    {
         "anime_title": "One Piece",
         "episode_number": 1009,
         "file_extension": "mkv",
