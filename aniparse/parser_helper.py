@@ -64,13 +64,20 @@ def is_mostly_latin_string(string: str):
     return latin_length / len(string) >= 0.5
 
 
-def is_number(text) -> bool:
+def is_potential_number(text) -> bool:
+    """
+    1.0 -> False
+    1 -> True
+    1.1 -> True
+    1.1.1 -> False
+    01 -> True
+    01.1 -> False
+    """
     try:
         f_text = float(text)
         # Evangelion 1.0: You Are (Not) Alone
         if f_text.is_integer():
-            if int(f_text) == int(f_text):
-                return True
+            return True
         if str(f_text) != text:
             return False
         return True

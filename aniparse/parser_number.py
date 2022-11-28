@@ -210,7 +210,7 @@ class Pattern(EpisodePattern, VolumePattern):
         """
         Check if the word have a valid numbered pattern.
         """
-        if parser_helper.is_number(word) and not prefix:
+        if parser_helper.is_potential_number(word) and not prefix:
             # If the word only a number and the prefix is not set, then try to check the previous token
             previous_token = self.find_prev(token, TokenFlags.IDENTIFIER | TokenFlags.UNKNOWN)
             if previous_token.content.lower() in ["part", "movie"]:
