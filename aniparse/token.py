@@ -237,13 +237,13 @@ class Tokens:
                 return token
         return None
 
-    def find_next(self, token: Token = None, flags: int = None, element: ElementCategory = None) -> Union[Token, None]:
+    def find_next(self, token: Token = None, flags: int = None, element: Union[ElementCategory, List[ElementCategory]] = None) -> Union[Token, None]:
         tokens = self.tokens
         if token is not None:
             tokens = tokens[self.get_index(token) + 1:]
         return self.find_in_tokens(tokens, flags, element)
 
-    def find_prev(self, token: Token = None, flags: int = None, element: ElementCategory = None) -> Union[Token, None]:
+    def find_prev(self, token: Token = None, flags: int = None, element: Union[ElementCategory, List[ElementCategory]] = None) -> Union[Token, None]:
         tokens = self.tokens.copy()  # make copy of the list, but the tokens are still the same
         if token is None:
             tokens.reverse()

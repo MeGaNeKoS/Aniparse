@@ -1923,6 +1923,27 @@ table = [
         "video_resolution": "1080p"
     },
     {
+        "anime_title": "Nanatsu no Taizai S3 Kamigami no Gekirin",
+        "episode_number": 21,
+        "file_extension": "mkv",
+        "file_name": "[zza] Nanatsu no Taizai - S03 - Kamigami no Gekirin - 21 [1080p.x265].mkv",
+        "release_group": "zza",
+        "video_resolution": "1080p",
+        "video_term": "x265"
+    },
+    {
+        "anime_season": 3,
+        "anime_season_prefix": "S",
+        "anime_title": "Nanatsu no Taizai",
+        "anime_type": "OVA",
+        "episode_number": 21,
+        "file_extension": "mkv",
+        "file_name": "[zza] Nanatsu no Taizai - S03 - OVA - 21 [1080p.x265].mkv",
+        "release_group": "zza",
+        "video_resolution": "1080p",
+        "video_term": "x265"
+    },
+    {
         "anime_title": "Shingeki no Kyojin",
         "audio_term": "AAC",
         "episode_number": 5,

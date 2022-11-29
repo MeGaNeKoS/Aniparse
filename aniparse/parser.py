@@ -561,6 +561,52 @@ class Parser(Tokenizer, ParserNumber):
                         for token in enclosed_tokens:
                             self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.EPISODE_NUMBER_ALT)
 
+        # Check for unknown tokens between Season and Episode
+        token_season = self.find_next(None, flags=TokenFlags.IDENTIFIER,
+                                      element=[
+                                          ElementCategory.ANIME_SEASON_PREFIX,
+                                          ElementCategory.ANIME_SEASON,
+                                      ])
+        token_type = self.find_next(None, flags=TokenFlags.IDENTIFIER,
+                                    element=[
+                                        ElementCategory.ANIME_TYPE,
+                                    ])
+        token_number = self.find_next(None, flags=TokenFlags.IDENTIFIER,
+                                      element=[
+                                          ElementCategory.EPISODE_NUMBER,
+                                      ])
+        if token_season:
+            token_end = token_type or token_number
+            if token_end:
+                actually_a_title = False
+                for token in self.get_list(TokenFlags.UNKNOWN, token_season, token_end):
+                    if parser_helper.is_dash_character(token.content) or not token.content:
+                        continue
+                    actually_a_title = True
+                if actually_a_title:
+                    # set token from end of anime title until season token to be anime title
+                    anime_title = self.find_prev(token_season, flags=TokenFlags.IDENTIFIER)
+                    for token in self.get_list(None, anime_title, token_end):
+                        if token.e_category in [token_end.e_category]:
+                            break
+                        if token.e_category == ElementCategory.ANIME_SEASON:
+                            token.content = str(int(token.content))
+                        self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.ANIME_TITLE)
+
+        if token_type and token_number:
+            actually_a_title = False
+            for token in self.get_list(TokenFlags.UNKNOWN, token_type, token_number):
+                if parser_helper.is_dash_character(token.content) or not token.content:
+                    continue
+                actually_a_title = True
+            if actually_a_title:
+                # set token from end of anime title until season token to be anime title
+                anime_title = self.find_prev(token_type, flags=TokenFlags.IDENTIFIER)
+                for token in self.get_list(None, anime_title, token_number):
+                    if token.e_category in [token_number.e_category]:
+                        break
+                    self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.ANIME_TITLE)
+
         # Fill the unknown tokens with the keywords
         for token in self.get_list(TokenFlags.UNKNOWN):
             keyword = self.keyword_manager.find(self.keyword_manager.normalize(token.content))
@@ -593,6 +639,7 @@ class Parser(Tokenizer, ParserNumber):
             if keyword:
                 self.set_token_element(real_token[0], TokenCategory.IDENTIFIER, keyword.e_category)
 
+        # Anime type `Movie` are invalid if the last token is `the`
         token = self.find_prev(None, flags=TokenFlags.IDENTIFIER, element=ElementCategory.ANIME_TITLE)
         if token:
             if token.content.lower() == "the":
