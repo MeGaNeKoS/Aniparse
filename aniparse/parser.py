@@ -561,6 +561,12 @@ class Parser(Tokenizer, ParserNumber):
                         for token in enclosed_tokens:
                             self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.EPISODE_NUMBER_ALT)
 
+        # Fill the unknown tokens with the keywords
+        for token in self.get_list(TokenFlags.UNKNOWN):
+            keyword = self.keyword_manager.find(self.keyword_manager.normalize(token.content))
+            if keyword:
+                self.set_token_element(token, TokenCategory.IDENTIFIER, keyword.e_category)
+
         # Check for unknown tokens between Season and Episode
         token_season = self.find_next(None, flags=TokenFlags.IDENTIFIER,
                                       element=[
@@ -607,11 +613,6 @@ class Parser(Tokenizer, ParserNumber):
                         break
                     self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.ANIME_TITLE)
 
-        # Fill the unknown tokens with the keywords
-        for token in self.get_list(TokenFlags.UNKNOWN):
-            keyword = self.keyword_manager.find(self.keyword_manager.normalize(token.content))
-            if keyword:
-                self.set_token_element(token, TokenCategory.IDENTIFIER, keyword.e_category)
 
         # make sure there's no anime type in the episode title
         tokens = self.get_list(elements=ElementCategory.EPISODE_TITLE)
