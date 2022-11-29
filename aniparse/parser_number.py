@@ -3,6 +3,7 @@ from typing import List
 
 from aniparse import parser_helper
 from aniparse.element import ElementCategory
+from aniparse.keyword import Keyword
 from aniparse.token import Token, TokenCategory, TokenFlags, Tokens
 
 ANIME_YEAR_MIN = 1900
@@ -92,7 +93,7 @@ class EpisodePattern(Tokens):
                    r"(\d+(?:\.\d+)?)(?:([v])(\d+))?)?"  # Episode "01", "01v2"
                    # Optional, first part of the episode title
                    r"(?:([" + parser_helper.ESCAPED_DASHES +
-                   r"])(.*))?$")
+                   r"])(.*?))?$")
         match = re.match(pattern, word, flags=re.IGNORECASE)
 
         if match:
@@ -303,7 +304,8 @@ class Pattern(EpisodePattern, VolumePattern):
         e.g. "01", "01v2", "07.5", "07.5v2"
         pattern = <episode_number>[v<release_version>]
         """
-        pattern = '^(\\d+(?:\\.\\d+)?)(?:([v])(\\d+))?$'
+        pattern = (r'^(\d+(?:\.\d+)?)'
+                   r'(?:([v])(\d+))?$')
         match = re.match(pattern, word, flags=re.IGNORECASE)
         if match:
             # in reverse order to keep the order of tokens
@@ -349,6 +351,34 @@ class ParserNumber(Pattern):
                 category = ElementCategory.VOLUME_NUMBER
             elif keyword.e_category == ElementCategory.ANIME_SEASON_PREFIX:
                 category = ElementCategory.ANIME_SEASON
+                additional_prefix = parser_helper.find_non_number_in_string(number)
+                if additional_prefix:
+                    left_over = number[additional_prefix:]
+                    new_number_begin = parser_helper.find_number_in_string(left_over)
+                    key = left_over[:new_number_begin]
+                    lo_keyword = self.keyword_manager.find(
+                        self.keyword_manager.normalize(key)
+                    )
+                    if (lo_keyword
+                            and lo_keyword.e_category == ElementCategory.ANIME_TYPE):
+                        number = number[:additional_prefix]
+                    else:
+                        if key.upper() == "S":
+                            new_token = Token(prefix,
+                                              TokenCategory.IDENTIFIER,
+                                              ElementCategory.ANIME_SEASON_PREFIX,
+                                              token.enclosed)
+                            self.insert_before(token, new_token)
+                            new_token = Token(number[:additional_prefix],
+                                              TokenCategory.IDENTIFIER,
+                                              ElementCategory.ANIME_SEASON,
+                                              token.enclosed)
+                            self.insert_before(token, new_token)
+                            keyword = Keyword(ElementCategory.ANIME_TYPE, keyword.options)
+                            category = ElementCategory.EPISODE_NUMBER
+                            prefix = key
+                            number = left_over[new_number_begin:]
+                        del left_over
             elif keyword.e_category == ElementCategory.ANIME_TYPE:
                 category = ElementCategory.EPISODE_NUMBER
             else:
@@ -357,6 +387,12 @@ class ParserNumber(Pattern):
             if self.is_match_number_patterns(token, number, category, True):
                 new_token = Token(prefix, TokenCategory.IDENTIFIER, keyword.e_category, token.enclosed)
                 self.insert_before(token, new_token)
+                try:
+                    left_token = Token(left_over, TokenCategory.UNKNOWN, ElementCategory.UNKNOWN, token.enclosed)
+                    self.insert_after(token, left_token)
+                    self.is_number_comes_after_prefix(left_token)
+                except NameError:
+                    pass
                 return True
         return False
 
@@ -482,7 +518,7 @@ class ParserNumber(Pattern):
             if previous_token and str(previous_token.content).lower() in ["part"]:
                 continue
             previous_token = self.find_prev(token, TokenFlags.UNKNOWN | TokenFlags.BRACKET)
-            if not previous_token or previous_token == token:  #, because previous_token most likely same as token
+            if not previous_token or previous_token == token:  # , because previous_token most likely same as token
                 continue
             if not parser_helper.is_dash_character(previous_token.content):
                 next_token = self.find_next(token, TokenFlags.NOT_DELIMITER)

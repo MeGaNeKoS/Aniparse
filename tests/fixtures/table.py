@@ -1386,6 +1386,16 @@ table = [
         "release_group": "Judas"
     },
     {
+        "anime_season": 1,
+        "anime_season_prefix": "S",
+        "anime_title": "Grisaia no Kajitsu",
+        "anime_type": "S",
+        "episode_number": 2,
+        "file_extension": "mkv",
+        "file_name": "[Judas] Grisaia no Kajitsu - S01S02.mkv",
+        "release_group": "Judas"
+    },
+    {
         "anime_title": "Initial D Extra Stage",
         "episode_number": 2,
         "episode_title": "Sentimental White",
@@ -1406,6 +1416,16 @@ table = [
         "file_name": "[Judas] One Piece - 1009v2.mkv",
         "release_group": "Judas",
         "release_version": 2
+    },
+    {
+        "anime_season": 1,
+        "anime_season_prefix": "S",
+        "anime_title": "One Punch Man",
+        "anime_type": "OVA",
+        "episode_number": 2,
+        "file_extension": "mkv",
+        "file_name": "[Judas] One Punch Man - S01OVA02.mkv",
+        "release_group": "Judas"
     },
     {
         "anime_season": 1,
