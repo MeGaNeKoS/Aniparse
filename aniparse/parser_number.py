@@ -394,6 +394,21 @@ class ParserNumber(Pattern):
                 except NameError:
                     pass
                 return True
+        else:
+            number = token.content[number_begin:]
+            if prefix[-1].lower() == "v" and number.isdigit():
+                keyword = self.keyword_manager.find(
+                    self.keyword_manager.normalize(prefix[:-1])
+                )
+                if keyword and keyword.e_category in [ElementCategory.EPISODE_PREFIX, ElementCategory.VOLUME_PREFIX,
+                                                      ElementCategory.ANIME_SEASON_PREFIX, ElementCategory.ANIME_TYPE]:
+                    token.content = prefix[:-1]
+                    self.set_token_element(token, TokenCategory.IDENTIFIER, keyword.e_category)
+                    new_token = Token(prefix[-1], TokenCategory.INVALID, ElementCategory.UNKNOWN, token.enclosed)
+                    self.insert_after(token, new_token)
+                    new_token = Token(number, TokenCategory.IDENTIFIER, ElementCategory.RELEASE_VERSION, token.enclosed)
+                    self.insert_after(token, new_token)
+                    return True
         return False
 
     def is_number_comes_before_another_number(self, token: Token) -> bool:

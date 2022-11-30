@@ -667,6 +667,17 @@ table = [
         "video_resolution": "720p"
     },
     {
+        "anime_title": "Witch Craft Works",
+        "anime_type": "ED",
+        "file_extension": "mkv",
+        "file_name": "[AnimeRG] Witch Craft Works - EDv2 [1080p] [x265] [pseudo].mkv",
+        "other": "pseudo",
+        "release_group": "AnimeRG",
+        "release_version": 2,
+        "video_resolution": "1080p",
+        "video_term": "x265"
+    },
+    {
         "anime_title": "Mangaka-san to Assistant-san to the Animation",
         "audio_term": "AAC",
         "episode_number": 2,
