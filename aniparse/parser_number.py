@@ -12,6 +12,31 @@ ANIME_YEAR_MAX = 2100
 
 # noinspection DuplicatedCode
 class EpisodePattern(Tokens):
+    _re_japanese_counter = re.compile(r"^(第)?(\d+)"  # prefix
+                                      r"(?:([" + parser_helper.ESCAPED_DASHES +
+                                      r" ~&+]?)"  # prefix separator
+                                      r"(\d+))?"  # number
+                                      r"([話弾])$",  # prefix
+                                      flags=re.IGNORECASE)
+    _re_number_sign = re.compile(r"^(#)(\d+(?:\.\d+)?)"  # sign and number
+                                 r"(?:([" + parser_helper.ESCAPED_DASHES +
+                                 r" ~&+]?)"  # separator
+                                 r"(\d+(?:\.\d+)?))?"  # 2nd number
+                                 r"(?:(v)(\d+))?$",  # version
+                                 flags=re.IGNORECASE)
+    _re_season_episode = re.compile(r"^(?:(\d+)|(s)(\d+)"  # Season prefix or number
+                                    r"(?:([" + parser_helper.ESCAPED_DASHES +
+                                    r" ~&+])"  # separator
+                                    r"(s)?(\d+))?)"  # 2nd season prefix or number
+                                    # Season "1", "s01", "s01-02", "s01~02"
+                                    r"(?:(x)|([" + parser_helper.ESCAPED_DASHES +
+                                    r" ._\-x:])?(e))"  # Season-Episode separator
+                                    r"(\d+(?:\.\d+)?)(?:(v)(\d+))?"  # Episode "01", "01v2"
+                                    r"(?:([" + parser_helper.ESCAPED_DASHES +
+                                    r"~&+])(e)?"  # Episode range separator
+                                    r"(\d+(?:\.\d+)?)(?:(v)(\d+))?)?$",  # Episode "01", "01v2"
+                                    flags=re.IGNORECASE)
+
     def is_match_japanese_counter_pattern(self, token: Token, word: str) -> bool:
         """
         Checking for japanese style counter pattern
@@ -20,9 +45,7 @@ class EpisodePattern(Tokens):
         pattern
         <japanese counter><episode number>[<range_separator><episode number>]
         """
-        pattern = (r"^(第)?(\d+)(?:([\ \~\&\+ " + parser_helper.ESCAPED_DASHES +
-                   r"]?)(\d+))?(話|弾)$")
-        match = re.match(pattern, word, flags=re.IGNORECASE)
+        match = self._re_japanese_counter.match(word)
         if match:
             if match.group(5):
                 self.insert_tokens(token, match.group(5), TokenCategory.IDENTIFIER, ElementCategory.UNKNOWN)
@@ -47,9 +70,7 @@ class EpisodePattern(Tokens):
         pattern
         <number sign><episode number>[<range_separator><episode number>][<version>]
         """
-        pattern = (r"^(#)(\d+(?:\.\d+)?)(?:([\ " + parser_helper.ESCAPED_DASHES +
-                   r"\~\&\+]?)(\d+(?:\.\d+)?))?(?:(v)(\d+))?$")
-        match = re.match(pattern, word, flags=re.IGNORECASE)
+        match = self._re_number_sign.match(word)
         if match:
             if match.group(6):
                 self.insert_tokens(token, match.group(6), TokenCategory.IDENTIFIER, ElementCategory.RELEASE_VERSION)
@@ -83,16 +104,7 @@ class EpisodePattern(Tokens):
         <episode_number>[v<release_version>][<range_separator>[episode_prefix]<episode_number>[v<release_version>]]
         """
 
-        pattern = (r"^(?:(\d+)|([s])(\d+)(?:([" + parser_helper.ESCAPED_DASHES +
-                   r"\~\&\+])(s)?(\d+))?)"  # Season "1", "s01", "s01-02", "s01~02"
-                   r"(?:(x)|([\ \._\-x:" + parser_helper.ESCAPED_DASHES +
-                   r"])?(e))"  # Season-Episode separator
-                   r"(\d+(?:\.\d+)?)(?:([v])(\d+))?"  # Episode "01", "01v2"
-                   r"(?:([" + parser_helper.ESCAPED_DASHES +
-                   r"\~\&\+])(e)?"  # Episode range separator
-                   r"(\d+(?:\.\d+)?)(?:([v])(\d+))?)?$"  # Episode "01", "01v2"
-                   )
-        match = re.match(pattern, word, flags=re.IGNORECASE)
+        match = self._re_season_episode.match(word)
 
         if match:
             # check for lower bound < upper bound
@@ -162,6 +174,14 @@ class Pattern(EpisodePattern, VolumePattern):
     """
     Main pattern that apply for Episode, Volume, and Season.
     """
+    _re_match_multi_number = re.compile(r"(\d+(?:\.\d+)?)(?:(v)(\d+))?"  # Episode number, release version
+                                        r"([" + parser_helper.ESCAPED_DASHES +
+                                        r" ~&+])"  # Range separator
+                                        r"(\d+(?:\.\d+)?)(?:(v)(\d+))?$",  # Episode number, release version
+                                        flags=re.IGNORECASE)
+    _re_match_single_number = re.compile((r'^(\d+(?:\.\d+)?)'  # Episode number
+                                          r'(?:(v)(\d+))?$'),  # Release version
+                                         flags=re.IGNORECASE)
 
     def is_match_multi_numbers_pattern(self, token: Token, word: str, category: ElementCategory) -> bool:
         """
@@ -169,9 +189,7 @@ class Pattern(EpisodePattern, VolumePattern):
         e.g. "01-02", "01-02v2", "01v2-02v2", "01v2-02", "04.5-05.5", "04.5-05.5v2", "04.5v2-05.5v2", "04.5v2-05.5"
         pattern = <episode_number>[v<release_version>]<range_separator><episode_number>[v<release_version>]
         """
-        pattern = (r"(\d+(?:\.\d+)?)(?:([v])(\d+))?([" + parser_helper.ESCAPED_DASHES +
-                   r"\~\&\+])(\d+(?:\.\d+)?)(?:([v])(\d+))?$")
-        match = re.match(pattern, word, flags=re.IGNORECASE)
+        match = self._re_match_multi_number.match(word)
         if match:
             lower_bound = match.group(1)
             upper_bound = match.group(5)
@@ -298,9 +316,7 @@ class Pattern(EpisodePattern, VolumePattern):
         e.g. "01", "01v2", "07.5", "07.5v2"
         pattern = <episode_number>[v<release_version>]
         """
-        pattern = (r'^(\d+(?:\.\d+)?)'
-                   r'(?:([v])(\d+))?$')
-        match = re.match(pattern, word, flags=re.IGNORECASE)
+        match = self._re_match_single_number.match(word)
         if match:
             # in reverse order to keep the order of tokens
             if match.group(3):
@@ -315,6 +331,8 @@ class Pattern(EpisodePattern, VolumePattern):
 
 
 class ParserNumber(Pattern):
+    _re_search_buggy_dash = re.compile(r"(" + "|".join(parser_helper.DASHES) + r")",
+                                       flags=re.IGNORECASE)
 
     def is_extent_keyword(self, token: Token, category: ElementCategory, prefix: bool) -> bool:
         next_token = self.find_next(token, TokenFlags.NOT_DELIMITER)
@@ -436,9 +454,7 @@ class ParserNumber(Pattern):
         :return:
         """
         for token in tokens:
-
-            splitted = re.split(r"(" + "|".join(parser_helper.DASHES) +
-                                r")", token.content, re.IGNORECASE)
+            splitted = self._re_search_buggy_dash.split(token.content)
             placeholder = []
             new_token = Token("", token.t_category, token.e_category, token.enclosed)
             potential_tokens = []
