@@ -523,6 +523,14 @@ table = [
         "video_resolution": "1080p"
     },
     {
+        "anime_title": "Toradora",
+        "episode_number": 3,
+        "episode_prefix": "E",
+        "episode_title": "Your-Song",
+        "file_extension": "mkv",
+        "file_name": "Toradora-E03-Your-Song.mkv"
+    },
+    {
         "anime_season": 1,
         "anime_season_prefix": "S",
         "anime_title": "Toradora!",

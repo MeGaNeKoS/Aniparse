@@ -90,10 +90,8 @@ class EpisodePattern(Tokens):
                    r"(\d+(?:\.\d+)?)(?:([v])(\d+))?"  # Episode "01", "01v2"
                    r"(?:([" + parser_helper.ESCAPED_DASHES +
                    r"\~\&\+])(e)?"  # Episode range separator
-                   r"(\d+(?:\.\d+)?)(?:([v])(\d+))?)?"  # Episode "01", "01v2"
-                   # Optional, first part of the episode title
-                   r"(?:([" + parser_helper.ESCAPED_DASHES +
-                   r"])(.*?))?$")
+                   r"(\d+(?:\.\d+)?)(?:([v])(\d+))?)?$"  # Episode "01", "01v2"
+                   )
         match = re.match(pattern, word, flags=re.IGNORECASE)
 
         if match:
@@ -114,10 +112,6 @@ class EpisodePattern(Tokens):
             except ValueError:
                 pass
             # in reverse order to keep the order of tokens
-            if match.group(19):
-                self.insert_tokens(token, match.group(19), TokenCategory.UNKNOWN, ElementCategory.UNKNOWN)
-            if match.group(18):
-                self.insert_tokens(token, match.group(18), TokenCategory.UNKNOWN, ElementCategory.UNKNOWN)
             if match.group(17):
                 self.insert_tokens(token, match.group(17), TokenCategory.IDENTIFIER, ElementCategory.RELEASE_VERSION)
             if match.group(16):
@@ -442,19 +436,35 @@ class ParserNumber(Pattern):
         :return:
         """
         for token in tokens:
-            match = re.match(r"(.*)(" + "|".join(parser_helper.DASHES) +
-                             r")(.*?)(\d.*)", token.content, re.IGNORECASE)
-            if match:
-                token.content = match.group(3) + match.group(4)
-                index = self.get_index(token)
-                if self.is_number_comes_after_prefix(token):
-                    new_delimiter = Token(match.group(2), TokenCategory.DELIMITER, ElementCategory.DELIMITER,
-                                          token.enclosed)
-                    self.insert(index, new_delimiter)
-                    new_token = Token(match.group(1), TokenCategory.UNKNOWN, ElementCategory.UNKNOWN, token.enclosed)
-                    self.insert(index, new_token)
+
+            splitted = re.split(r"(" + "|".join(parser_helper.DASHES) +
+                                r")", token.content, re.IGNORECASE)
+            placeholder = []
+            new_token = Token("", token.t_category, token.e_category, token.enclosed)
+            potential_tokens = []
+            for text in splitted:
+                if parser_helper.find_number_in_string(text):
+                    if new_token.content:
+                        new_token.content = new_token.content.strip(parser_helper.DASHES)
+                        placeholder.append(new_token)
+                        new_token = Token("", token.t_category, token.e_category, token.enclosed)
+                    number_token = Token(text, token.t_category, token.e_category, token.enclosed)
+                    placeholder.append(number_token)
+                    potential_tokens.append(number_token)
                 else:
-                    token.content = match.group(1) + match.group(2) + match.group(3) + match.group(4)
+                    new_token.content += text
+            if new_token.content:
+                new_token.content = new_token.content.strip(parser_helper.DASHES)
+                placeholder.append(new_token)
+
+            if placeholder:
+                placeholder.reverse()
+                for i_token in placeholder:
+                    self.insert_after(token, i_token)
+                self.remove_token(token)
+
+            for potential_token in potential_tokens:
+                self.is_number_comes_after_prefix(potential_token)
         return
 
     def search_for_equivalent_numbers(self, tokens: List[Token]) -> bool:
