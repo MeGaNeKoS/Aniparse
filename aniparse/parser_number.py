@@ -408,7 +408,7 @@ class ParserNumber(Pattern):
                 return True
         else:
             number = token.content[number_begin:]
-            if prefix[-1].lower() == "v" and number.isdigit():
+            if prefix and prefix[-1].lower() == "v" and number.isdigit():
                 keyword = self.keyword_manager.find(
                     self.keyword_manager.normalize(prefix[:-1])
                 )
@@ -459,19 +459,38 @@ class ParserNumber(Pattern):
             new_token = Token("", token.t_category, token.e_category, token.enclosed)
             potential_tokens = []
             for text in splitted:
-                if parser_helper.find_number_in_string(text):
+                if parser_helper.find_number_in_string(text) is not None:
                     if new_token.content:
-                        new_token.content = new_token.content.strip(parser_helper.DASHES)
+                        # first and last dashes put on separate token
+                        stripped_text = new_token.content.strip(parser_helper.DASHES)
+                        dashes = new_token.content.split(stripped_text)
+                        if dashes[0]:
+                            placeholder.append(Token(dashes[0], TokenCategory.INVALID,
+                                                     ElementCategory.UNKNOWN, token.enclosed))
+                        new_token.content = stripped_text
                         placeholder.append(new_token)
+                        if dashes[1]:
+                            placeholder.append(Token(dashes[1], TokenCategory.INVALID,
+                                                     ElementCategory.UNKNOWN, token.enclosed))
+
                         new_token = Token("", token.t_category, token.e_category, token.enclosed)
                     number_token = Token(text, token.t_category, token.e_category, token.enclosed)
                     placeholder.append(number_token)
                     potential_tokens.append(number_token)
                 else:
                     new_token.content += text
+
             if new_token.content:
-                new_token.content = new_token.content.strip(parser_helper.DASHES)
+                stripped_text = new_token.content.strip(parser_helper.DASHES)
+                dashes = new_token.content.split(stripped_text)
+                if dashes[0]:
+                    placeholder.append(Token(dashes[0], TokenCategory.INVALID,
+                                             ElementCategory.UNKNOWN, token.enclosed))
+                new_token.content = stripped_text
                 placeholder.append(new_token)
+                if dashes[1]:
+                    placeholder.append(Token(dashes[1], TokenCategory.INVALID,
+                                             ElementCategory.UNKNOWN, token.enclosed))
 
             if placeholder:
                 placeholder.reverse()
@@ -479,8 +498,17 @@ class ParserNumber(Pattern):
                     self.insert_after(token, i_token)
                 self.remove_token(token)
 
-            for potential_token in potential_tokens:
-                self.is_number_comes_after_prefix(potential_token)
+                is_found = False
+                for potential_token in potential_tokens:
+                    if self.is_number_comes_after_prefix(potential_token):
+                        is_found = True
+                    elif self.search_for_last_number([potential_token]):
+                        is_found = True
+
+                if not is_found:
+                    self.insert_after(placeholder[-1], token)
+                    for i_token in placeholder:
+                        self.remove_token(i_token)
         return
 
     def search_for_equivalent_numbers(self, tokens: List[Token]) -> bool:

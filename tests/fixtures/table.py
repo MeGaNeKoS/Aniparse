@@ -523,6 +523,13 @@ table = [
         "video_resolution": "1080p"
     },
     {
+        "anime_title": "Toradora! asdwd",
+        "episode_number": 3,
+        "episode_title": "Your-Song",
+        "file_extension": "mkv",
+        "file_name": "Toradora! asdwd-03-Your-Song.mkv"
+    },
+    {
         "anime_title": "Toradora",
         "episode_number": 3,
         "episode_prefix": "E",
