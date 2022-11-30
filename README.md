@@ -149,7 +149,8 @@ name of the fansub group.
     Spice and Wolf 2
 
 Is this the 2nd episode of `Spice and Wolf`, or a batch release of `Spice and Wolf 2`? with a text after number, there's
-no way to know. It's up to you consider both cases.
+no way to know. It's up to you consider both cases. For current version, it treats as part of title if it's not leading zero,
+and as episode number if it's leading zero.
 
 ## Suggestions to fansub groups
 
