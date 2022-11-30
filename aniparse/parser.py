@@ -186,29 +186,50 @@ class Parser(Tokenizer, ParserNumber):
                     token = self.find_prev(token_end, TokenFlags.NOT_DELIMITER)
             # Not sure why this is here, but it breaks the parser if not here
             token_end = self.find_prev(token_end, TokenFlags.VALID)
-
+        potential_type = None
+        anime_types = []
         for token in self.get_list(begin=token_begin, end=token_end):
+            if (parser_helper.is_dash_character(token.content)
+                    or token.t_category == TokenCategory.DELIMITER
+                    or token.content.upper() == "CLEAN"):
+                token_end = token
+                continue
             keyword = self.keyword_manager.find(self.keyword_manager.normalize(token.content))
             if keyword:
                 element = keyword.e_category
                 if element == ElementCategory.ANIME_TYPE:
+                    anime_types.append(token)
                     if token.content.upper() in ["ED", "NCED", "ENDING",
-                                                 "OP", "NCOP", "OPENING"]:
+                                                 "OP", "NCOP", "OPENING",
+                                                 "PV", "PREVIEW"]:
                         clean_token = self.find_prev(token, TokenFlags.UNKNOWN)
                         if clean_token and clean_token.content.upper() == "CLEAN":
                             token_end = self.find_prev(clean_token)
                             token.content = f"{clean_token.content} {token.content}"
                             self.remove_token(clean_token)
                         self.set_token_element(clean_token, TokenCategory.IDENTIFIER, ElementCategory.ANIME_TYPE)
+                        for anime_type in anime_types:
+                            self.set_token_element(anime_type, TokenCategory.IDENTIFIER, ElementCategory.ANIME_TYPE)
+                        if potential_type:
+                            token_end = potential_type
                         break
                     previous_token = self.find_prev(token, TokenFlags.NOT_DELIMITER)
                     if previous_token and parser_helper.is_dash_character(previous_token.content):
                         next_token = self.find_next(token, TokenFlags.NOT_DELIMITER)
                         if next_token:
                             if next_token.t_category != TokenCategory.UNKNOWN:
+                                self.set_token_element(token, TokenCategory.IDENTIFIER,
+                                                       ElementCategory.ANIME_TYPE)
                                 break
+                            if not potential_type:
+                                potential_type = token_end
                         else:
                             break
+                    if potential_type:
+                        token_end = potential_type
+            if potential_type != token_end:
+                potential_type = None
+                anime_types = []
             token_end = token
         if enclosed_title:
             token_end = self.find_prev(token_end, TokenFlags.VALID)
@@ -567,6 +588,33 @@ class Parser(Tokenizer, ParserNumber):
             if keyword:
                 self.set_token_element(token, TokenCategory.IDENTIFIER, keyword.e_category)
 
+        tokens = self.get_list(elements=ElementCategory.EPISODE_TITLE)
+        real_token = []
+        for token in tokens:
+            if not token.content.strip(" " + parser_helper.DASHES):
+                continue
+            if token.t_category in [TokenCategory.DELIMITER, TokenCategory.BRACKET]:
+                continue
+            real_token.append(token)
+
+        if len(real_token) == 1:
+            keyword = self.keyword_manager.find(self.keyword_manager.normalize(real_token[0].content))
+            if keyword:
+                self.set_token_element(real_token[0], TokenCategory.IDENTIFIER, keyword.e_category)
+        elif len(real_token) == 2:
+            keyword = self.keyword_manager.find(self.keyword_manager.normalize(real_token[1].content))
+            if keyword and keyword.e_category == ElementCategory.ANIME_TYPE:
+                if (real_token[0].content.upper() == "CLEAN"
+                        and real_token[1].content.upper() in ["ED", "NCED", "ENDING",
+                                                              "OP", "NCOP", "OPENING"]):
+                    self.set_token_element(real_token[0], TokenCategory.IDENTIFIER, keyword.e_category)
+                    real_token[0].content += " " + real_token[1].content
+                    self.remove_token(real_token[1])
+        elif real_token:
+            keyword = self.keyword_manager.find(self.keyword_manager.normalize(real_token[-1].content))
+            if keyword and keyword.e_category == ElementCategory.ANIME_TYPE:
+                self.set_token_element(real_token[-1], TokenCategory.IDENTIFIER, keyword.e_category)
+
         # Check for unknown tokens between Season and Episode
         token_season = self.find_next(None, flags=TokenFlags.IDENTIFIER,
                                       element=[
@@ -609,10 +657,10 @@ class Parser(Tokenizer, ParserNumber):
                 # set token from end of anime title until season token to be anime title
                 anime_title = self.find_prev(token_type, flags=TokenFlags.IDENTIFIER)
                 for token in self.get_list(None, anime_title, token_number):
-                    if token.e_category in [token_number.e_category]:
+                    if (token.e_category in [token_number.e_category, ElementCategory.ANIME_TYPE]
+                            and token != token_type):
                         break
                     self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.ANIME_TITLE)
-
 
         # make sure there's no anime type in the episode title
         tokens = self.get_list(elements=ElementCategory.EPISODE_TITLE)
@@ -625,20 +673,6 @@ class Parser(Tokenizer, ParserNumber):
                     is_other = True
                 elif is_other:
                     self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.OTHER)
-
-        tokens = self.get_list(elements=ElementCategory.EPISODE_TITLE)
-        real_token = []
-        for token in tokens:
-            if not token.content.strip(" " + parser_helper.DASHES):
-                continue
-            if token.t_category in [TokenCategory.DELIMITER, TokenCategory.BRACKET]:
-                continue
-            real_token.append(token)
-
-        if len(real_token) == 1:
-            keyword = self.keyword_manager.find(self.keyword_manager.normalize(real_token[0].content))
-            if keyword:
-                self.set_token_element(real_token[0], TokenCategory.IDENTIFIER, keyword.e_category)
 
         # Anime type `Movie` are invalid if the last token is `the`
         token = self.find_prev(None, flags=TokenFlags.IDENTIFIER, element=ElementCategory.ANIME_TITLE)

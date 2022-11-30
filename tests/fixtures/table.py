@@ -1410,6 +1410,13 @@ table = [
         "release_group": "Judas"
     },
     {
+        "anime_title": "Nogizaka Haruka no Himitsu",
+        "anime_type": ["OVA", "NCOP"],
+        "file_extension": "mkv",
+        "file_name": "[Judas] Nogizaka Haruka no Himitsu - OVA NCOP.mkv",
+        "release_group": "Judas"
+    },
+    {
         "anime_title": "One Piece",
         "episode_number": 1009,
         "file_extension": "mkv",
