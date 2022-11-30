@@ -279,6 +279,8 @@ class Parser(Tokenizer, ParserNumber):
         if self.search_for_last_number(tokens):
             return
 
+        self.search_for_buggy_dash(tokens_original)
+
     def search_for_episode_title(self) -> None:
         """
         Search for the episode title.

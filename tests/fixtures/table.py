@@ -996,6 +996,18 @@ table = [
         "video_resolution": "720p"
     },
     {
+        "anime_season": 1,
+        "anime_season_prefix": "S",
+        "anime_title": "Natsu no Arashi!",
+        "episode_number": 1,
+        "episode_prefix": "E",
+        "episode_title": "Playback Part 2",
+        "file_checksum": "BD00F464",
+        "file_extension": "mkv",
+        "file_name": "[EMBER] Natsu no Arashi! - S01E01-Playback Part 2 [BD00F464].mkv",
+        "release_group": "EMBER"
+    },
+    {
         "anime_title": "One Piece",
         "episode_number": 1000,
         "file_checksum": "F2AE5FF6",
