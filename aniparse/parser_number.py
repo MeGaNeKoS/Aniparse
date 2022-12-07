@@ -226,6 +226,8 @@ class Pattern(EpisodePattern, VolumePattern):
         if parser_helper.is_potential_number(word) and not prefix:
             # If the word only a number and the prefix is not set, then try to check the previous token
             previous_token = self.find_prev(token, TokenFlags.IDENTIFIER | TokenFlags.UNKNOWN)
+            if not previous_token:
+                return True
             if previous_token.content.lower() in ["part"]:
                 return False
             if previous_token.t_category in [TokenCategory.DELIMITER, TokenCategory.BRACKET]:
