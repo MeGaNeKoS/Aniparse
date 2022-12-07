@@ -586,6 +586,13 @@ table = [
         "video_term": "Hi10P"
     },
     {
+        "anime_title": "Re:Zero kara Hajimeru Isekai Seikatsu",
+        "file_name": "[46620] Re:Zero kara Hajimeru Isekai Seikatsu [1080p AV1]",
+        "other": "AV1",
+        "release_group": "46620",
+        "video_resolution": "1080p"
+    },
+    {
         "anime_title": "RWBY",
         "episode_number": 14,
         "episode_title": "Forever Fall Part 2",
