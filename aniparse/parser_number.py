@@ -629,12 +629,18 @@ class ParserNumber(Pattern):
 
             if token.t_category == TokenCategory.UNKNOWN:
                 # look for other patterns
+                if is_found and token.content.upper() == "3D":
+                    continue
                 # if previous token is a dash, it is most likely an episode number
                 prefix = False
                 previous_token = self.find_prev(token, TokenFlags.NOT_DELIMITER)
-                keyword = self.keyword_manager.find(
-                    self.keyword_manager.normalize(previous_token.content))
-                prev_is_dash = parser_helper.is_dash_character(previous_token.content)
+                if previous_token:
+                    keyword = self.keyword_manager.find(
+                        self.keyword_manager.normalize(previous_token.content))
+                    prev_is_dash = parser_helper.is_dash_character(previous_token.content)
+                else:
+                    prev_is_dash = False
+
                 if prev_is_dash:
                     prefix = True
                 else:
