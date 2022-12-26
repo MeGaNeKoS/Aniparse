@@ -84,6 +84,27 @@ class Tokens:
             self.tail = token
         self.size += 1
 
+    def extend(self, other_tokens: 'Tokens') -> None:
+        """
+        Append the tokens from the given `Tokens` object to the current `Tokens` object.
+
+        Args:
+        - other_tokens (Tokens): The `Tokens` object to append to the current object.
+        """
+        if other_tokens.size == 0:
+            return
+
+        if self.size == 0:
+            self.head = other_tokens.head
+            self.tail = other_tokens.tail
+            self.size = other_tokens.size
+            return
+
+        self.tail.next = other_tokens.head
+        other_tokens.head.prev = self.tail
+        self.tail = other_tokens.tail
+        self.size += other_tokens.size
+
     def insert_after(self, token: Token, new_token: Token) -> None:
         """
         Insert a new token after the given token in the linked list.
