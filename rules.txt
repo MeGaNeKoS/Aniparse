@@ -1,0 +1,64 @@
+Anime Type
+   - MUST A valid KEYWORD in keyword manager.
+   - A token preceded by a dash and followed by a dash.
+        - MUST followed by BRACKET, other Keyword or END.
+   - A token followed by Episode Number after it.
+   - A token followed by a release version after it. e.g. "EDv2"
+
+Anime Season Number:
+    - MUST A valid KEYWORD in keyword_manager
+    - Valid Season Episode Pattern from ${Episode Number}
+    - Token with type KEYWORD, marked as SEASON_PREFIX in the keyword manager, followed by a valid Season Number before or after.
+
+Episode Number:
+    # Token with type DELIMITER are skipped
+    - A number at the beginning of the token list, followed by a dash. e.g "1- extra info.mkv"
+    - A number preceded by a dash and followed by a dash. e.g. "previous info - 01 extra info.mkv"
+    - A number that follows a token with type KEYWORD and is marked as EPISODE_PREFIX in the keyword manager,
+        provided that the number follows the other Episode Number rules. e.g. "Episode 01 extra info.mkv"
+    - A number integer version not the same with the string version of the number:
+        - The next token is a the end of the token list. "some extra information 01.mkv"
+        - The previous token is a dash. "Beginning information - 01 - some extra information.mkv"
+    - A number that follows a token with type KEYWORD and is marked as ANIME_TYPE in the keyword manager,
+        provided that the number follows the other Episode Number rules.
+    - A number with a BRACKET at both sides, and only one token in the list,
+        As well as it not at the beginning. e.g. "Beginning information [01] extra information.mkv"
+    - Token with type KEYWORD, marked as SEASON_PREFIX in the keyword manager,
+        and already have valid SEASON_NUMBER close to it.
+    - Single Episode Pattern:
+        - An episode number with an optional release version. e.g "1v2"
+    - Valid Episode Number and Episode Total:
+        - Two numbers separated by an underscore or a word "of"
+        - The first number should be less than or equal to the second number
+    - Valid Multi-Episode Pattern:
+        - A Valid Single Episode Pattern
+        - Followed by a range seperator
+        - Followed by a Single Episode Pattern
+    - Valid Partial Number Pattern:
+        - A number followed by a single alpha character.
+        - Have known prefixed before it. Otherwise, it just a candidate to be verified later.
+    - Valid Season Episode Pattern:
+        - Multi Episode Pattern
+            - Single Episode Pattern
+            - An optional range separator, episode prefix, and episode number with an optional release version.
+                            e.g. "[<range_separator>1v2]"
+        - Multi Season Multi Episode Pattern:
+            - A season number or prefix followed by a season number, with an optional range separator
+                and season prefix/number
+            - A season episode separator. e.g. "x" or "[range_separator]e"
+            - Multi Episode Pattern
+
+
+# I'll consider it
+Episode Number:
+    # - A number preceded by a dash and followed by a dash. e.g. "previous info - 01 extra info.mkv"
+    - Dash-prefixed Episode Number:
+        - A number preceded by a dash and followed by a dash, or
+        - A number preceded by a dash and enclosed in brackets
+
+Can you make the rule to be like items? Because It will log to be something like:
+```
+Episode Number:
+    - Condition 1
+    - Condition 2
+```

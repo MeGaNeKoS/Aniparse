@@ -147,7 +147,8 @@ class DelimiterTokens(Tokens):
 
                         if (self.is_delimiter_token(next_token) and
                                 next_token.content == delimiter):
-                            pass
+                            self.append_token_to(next_token, prev_token)
+                            next_token = next_token.next
                     # end of loop
                     token.next = next_token
                     continue
@@ -429,7 +430,10 @@ class Tokenizer:
                 cursor = open_bracket_index
 
             for last_pair_index, close_bracket_index in enumerate(close_brackets_position[last_pair_index:]):
-                if (open_bracket_index < close_bracket_index < next_open_bracket_index
+                # Todo: check if the close bracket are the real intended close bracket.
+                #  open_bracket = [27, 50]
+                #  close_bracket = [58, 59]
+                if (open_bracket_index < close_bracket_index
                         and self.filename[close_bracket_index] == constant.CLOSE_BRACKETS[constant.OPEN_BRACKETS.index(
                             self.filename[open_bracket_index])]):
                     break

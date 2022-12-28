@@ -1,5 +1,6 @@
 import json
 import logging
+import re
 from typing import List, Union, Dict, Tuple
 
 import unicodedata
@@ -24,9 +25,13 @@ class KeywordManager:
     using the `find` method.
     """
 
-    def __init__(self):
+    def __init__(self, delimiter: str = ""):
         self._keys = {}
         self._entries = {}
+        if not delimiter:
+            self.delimiter_pattern = re.compile(".*")
+        else:
+            self.delimiter_pattern = re.compile("|".join(re.escape(char) for char in delimiter), flags=re.IGNORECASE)
 
     @staticmethod
     def normalize(string: str) -> str:
@@ -52,6 +57,11 @@ class KeywordManager:
             if not keyword:
                 continue
             normalized_keyword = self.normalize(keyword)
+            kw = self.delimiter_pattern.split(normalized_keyword)
+            kw = [k for k in kw if k]
+            if len(kw) > 1:
+                self.add_entry(category, [normalized_keyword])
+                continue
             if normalized_keyword in self._keys:
                 logger.warning(f"Keyword '{keyword}' already exists")
                 continue
@@ -82,6 +92,9 @@ class KeywordManager:
         Search for a keyword in the keyword manager.
         If a keyword is found, it is returned. Otherwise, None is returned.
         """
+        if not string:
+            return None
+
         logger.debug(f'Searching for keyword: "{string}"')
         keyword = self._keys.get(string, None)
         logger.debug(f'Found keyword: "{keyword}"')

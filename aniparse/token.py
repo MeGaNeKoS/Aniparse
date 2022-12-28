@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Union
 
 from aniparse.element import ElementCategory
 
@@ -16,6 +17,7 @@ class TokenType(Enum):
 
     The token types are represented as instances of the `TokenType` class.
     """
+
     def __new__(cls):
         value = len(cls.__members__) + 1
         obj = object.__new__(cls)
@@ -27,6 +29,15 @@ class TokenType(Enum):
     DELIMITER = ()
     IDENTIFIER = ()
     INVALID = ()
+
+    def __contains__(self, item: 'TokenType') -> bool:
+        """
+        Check if the given element category is equal to this element category.
+
+        :param item: The element category to check.
+        :return: True if the categories are equal, False otherwise.
+        """
+        return self.value == item.value
 
 
 class Token:
@@ -49,6 +60,40 @@ class Token:
         self.prev = None
         self.next = None
 
+    def find_next(self, type_in: TokenType = None, type_not_in: TokenType = None,
+                  category_in: ElementCategory = None, category_not_in: ElementCategory = None) -> Union['Token', None]:
+        """
+        Find the next token in the token list.
+        """
+        token = self.next
+        while token:
+            if (type_in and token.type not in type_in
+                    or type_not_in and token.type in type_not_in
+                    or category_in and token.category not in category_in
+                    or category_not_in and token.category in category_not_in):
+                token = token.next
+                continue
+
+            return token
+        return None
+
+    def find_prev(self, type_in: TokenType = None, type_not_in: TokenType = None,
+                  category_in: ElementCategory = None, category_not_in: ElementCategory = None) -> Union['Token', None]:
+        """
+        Find the previous token in the token list.
+        """
+        token = self.prev
+        while token:
+            if (type_in and token.type not in type_in
+                    or type_not_in and token.type in type_not_in
+                    or category_in and token.category not in category_in
+                    or category_not_in and token.category in category_not_in):
+                token = token.prev
+                continue
+
+            return token
+        return None
+
 
 class Tokens:
     """
@@ -62,6 +107,9 @@ class Tokens:
         self.head = None
         self.tail = None
         self.size = 0
+
+    def __bool__(self):
+        return self.size > 0
 
     def __len__(self):
         return self.size
@@ -83,6 +131,34 @@ class Tokens:
             token.prev = self.tail
             self.tail = token
         self.size += 1
+
+    def combine(self, start_token: Token, end_token: Token, category: ElementCategory):
+        """
+        Combine the tokens between the start until the end tokens into a single token with the given category.
+
+        Args:
+            start_token (Token): The start token.
+            end_token (Token): The end token.
+            category (ElementCategory): The category to assign to the combined token.
+
+        Returns:
+            None: This method modifies the linked list in place and does not return anything.
+        """
+        if not start_token:
+            return
+
+        if start_token.next == end_token:
+            return
+
+        if end_token:
+            end_token = end_token.next
+
+        start_token.category = category
+
+        if start_token.next:
+            for token in self.loop_forward(start_token.next, end_token):
+                start_token.content += token.content
+                self.remove(token)
 
     def extend(self, other_tokens: 'Tokens') -> None:
         """
