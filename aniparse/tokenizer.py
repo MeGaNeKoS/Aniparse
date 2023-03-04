@@ -140,6 +140,10 @@ class Tokenizer(Tokens):
         return filename, open_brackets_position, close_brackets_position
 
     def _tokenize_by_brackets(self, filename) -> str:
+        """
+        Tokenize the text based on the brackets found in it.
+        Characters inside brackets are marked as enclosed.
+        """
         filename, open_brackets_position, close_brackets_position = self._get_brackets_position(filename)
 
         cursor = 0
