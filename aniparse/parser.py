@@ -49,6 +49,15 @@ class Parser(Tokenizer, ParserNumber):
         if previous_token:
             number = parser_helper.get_number_from_ordinal(previous_token.content)
             if number:
+                part_token = self.find_next(token, TokenFlags.NOT_DELIMITER)
+                if part_token.content.lower() == 'part':
+                    part_number_token = self.find_next(part_token, TokenFlags.NOT_DELIMITER)
+                    if part_number_token.content.isdigit():
+                        if self.options['season_part_as_unique']:
+                            return False
+                        part_token.t_category = TokenCategory.INVALID
+                        part_number_token.t_category = TokenCategory.INVALID
+
                 self.set_token_element(previous_token, TokenCategory.IDENTIFIER, ElementCategory.ANIME_SEASON)
                 previous_token.content = number
                 return True
@@ -57,6 +66,14 @@ class Parser(Tokenizer, ParserNumber):
         next_token = self.find_next(token, TokenFlags.NOT_DELIMITER)
         if next_token:
             if next_token.content.isdigit():
+                part_token = self.find_next(next_token, TokenFlags.NOT_DELIMITER)
+                if part_token.content.lower() == 'part':
+                    part_number_token = self.find_next(part_token, TokenFlags.NOT_DELIMITER)
+                    if part_number_token.content.isdigit():
+                        if self.options['season_part_as_unique']:
+                            return False
+                        part_token.t_category = TokenCategory.INVALID
+                        part_number_token.t_category = TokenCategory.INVALID
                 self.set_token_element(next_token, TokenCategory.IDENTIFIER, ElementCategory.ANIME_SEASON)
                 return True
         return False

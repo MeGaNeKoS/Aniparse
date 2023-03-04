@@ -247,8 +247,9 @@ class Pattern(EpisodePattern, VolumePattern):
                     self.set_token_element(previous_token, TokenCategory.IDENTIFIER, keyword.e_category)
                     self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.VOLUME_NUMBER)
                 elif keyword.e_category in [ElementCategory.ANIME_SEASON_PREFIX]:
-                    self.set_token_element(previous_token, TokenCategory.IDENTIFIER, keyword.e_category)
-                    self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.ANIME_SEASON)
+                    if not self.options['season_part_as_unique']:
+                        self.set_token_element(previous_token, TokenCategory.IDENTIFIER, keyword.e_category)
+                        self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.ANIME_SEASON)
             # check if the next token is an unknown token and the content is "-"
             # if true, then it possibly an episode number
             next_token = self.find_next(token, TokenFlags.UNKNOWN | TokenFlags.IDENTIFIER)

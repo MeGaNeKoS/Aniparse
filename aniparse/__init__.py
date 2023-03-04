@@ -17,7 +17,7 @@ default_options = {
     'keep_delimiters': False,
     'max_extension_length': 4,
     'title_before_episode': True,
-
+    'season_part_as_unique': True,
 }
 
 
