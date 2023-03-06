@@ -50,7 +50,7 @@ class Parser(Tokenizer, ParserNumber):
             number = parser_helper.get_number_from_ordinal(previous_token.content)
             if number:
                 part_token = self.find_next(token, TokenFlags.NOT_DELIMITER)
-                if part_token.content.lower() == 'part':
+                if part_token is not None and part_token.content.lower() == 'part':
                     part_number_token = self.find_next(part_token, TokenFlags.NOT_DELIMITER)
                     if part_number_token.content.isdigit():
                         if self.options['season_part_as_unique']:
@@ -67,7 +67,7 @@ class Parser(Tokenizer, ParserNumber):
         if next_token:
             if next_token.content.isdigit():
                 part_token = self.find_next(next_token, TokenFlags.NOT_DELIMITER)
-                if part_token.content.lower() == 'part':
+                if part_token is not None and part_token.content.lower() == 'part':
                     part_number_token = self.find_next(part_token, TokenFlags.NOT_DELIMITER)
                     if part_number_token.content.isdigit():
                         if self.options['season_part_as_unique']:
