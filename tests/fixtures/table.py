@@ -49,6 +49,12 @@ table = [
     },
     {
         "anime_title": "Attack on Titan",
+        "anime_season": 3,
+        "anime_season_prefix": "Season",
+        "file_name": "Attack on Titan Season 3"
+    },
+    {
+        "anime_title": "Attack on Titan",
         "episode_number": 3,
         "episode_prefix": "Episode",
         "episode_title": "A Dim Light Amid Despair / Humanity's Comeback, Part 1",
