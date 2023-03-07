@@ -5,7 +5,7 @@ with open("README.md", encoding="utf-8") as f:
 
 setup(
     name='aniparse',
-    version='1.1.3',
+    version='1.2.1',
     description="An anime video filename parser",
     long_description=README,
     long_description_content_type="text/markdown",
