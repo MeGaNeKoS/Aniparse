@@ -160,18 +160,13 @@ class Tokens:
             # come back later
             if delimiter != ' ' and delimiter != '_':
                 if is_single_character_token(prev_token):
-                    append_token_to(token, prev_token)
-                    while is_unknown_token(next_token):
-
-                        # 2nd "." in "R.O.D"
-                        append_token_to(next_token, prev_token)
-                        next_token = find_next_valid_token(next_token)
-                        if is_delimiter_token(next_token) and \
-                                next_token.content == delimiter:
-                            # "." in "R.O."
-                            append_token_to(next_token, prev_token)
-                            next_token = find_next_valid_token(next_token)
-                    continue
+                    if delimiter not in "&+":
+                        # need to be here to make the ["D", ".", "C", ".", "II"] still in this format
+                        # Otherwise it will be ["D.C", ".", "II"],
+                        # Which not a big deal, but I dont know the effect to other part
+                        # In the original code, it makes "A.Certain.Scientific.Railgun.S02." Into a single token.
+                        # Which is not the one I wanted.
+                        continue
                 if is_single_character_token(next_token):
                     # e.g. "." in "07.1", "." in "TrueHD5.1"
                     append_token_to(token, prev_token)

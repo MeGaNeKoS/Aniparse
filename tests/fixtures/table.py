@@ -180,10 +180,13 @@ table = [
     },
     {
         "anime_title": "Evangelion The New Movie Q",
-        "audio_term": "AACx2",
+        "audio_term": [
+            "AACx2",
+            "5.1",
+            "2.0"
+        ],
         "file_extension": "mp4",
         "file_name": "Evangelion The New Movie Q (BD 1280x720 AVC AACx2 [5.1+2.0]).mp4",
-        "other": "[5.1+2.0]",
         "source": "BD",
         "video_resolution": "1280x720",
         "video_term": "AVC"
@@ -381,13 +384,15 @@ table = [
     },
     {
         "anime_title": "Kotonoha no Niwa",
-        "audio_term": "AACx3",
+        "audio_term": [
+            "AACx3",
+            '5.1',
+            '2.0',
+            '2.0'
+        ],
         "file_extension": "mp4",
         "file_name": "Kotonoha no Niwa (BD 1280x720 AVC AACx3 [5.1+2.0+2.0] Subx3).mp4",
-        "other": [
-            "[5.1+2.0+2.0]",
-            "Subx3"
-        ],
+        "other": 'Subx3',
         "source": "BD",
         "video_resolution": "1280x720",
         "video_term": "AVC"
@@ -1496,7 +1501,7 @@ table = [
         "release_group": "Judas"
     },
     {
-        "anime_title": "D.C.II Da Capo II",
+        "anime_title": "D C II Da Capo II",
         "episode_number": 1,
         "episode_prefix": "Ep",
         "file_checksum": "a1fc58a7",
@@ -1519,7 +1524,7 @@ table = [
         "video_term": "HD"
     },
     {
-        "anime_title": "D.Gray-man",
+        "anime_title": "D Gray-man",
         "episode_number": 4,
         "file_extension": "avi",
         "file_name": "[KLF]_D.Gray-man_04V2.avi",
@@ -1790,20 +1795,20 @@ table = [
     },
     {
         "anime_title": "Kidou Senshi Gundam UC Unicorn",
+        "audio_term": [
+            "AAC",
+            "5.1ch",
+            "JP",
+            "EN"
+        ],
         "episode_number": 2,
         "episode_prefix": "episode",
         "file_extension": "mp4",
         "file_name": "[TV-J] Kidou Senshi Gundam UC Unicorn - episode.02 [BD 1920x1080 h264+AAC(5.1ch JP+EN) +Sub(JP-EN-SP-FR-CH) Chap].mp4",
-        "other": [
-            "AAC(5",
-            "1ch",
-            "JP",
-            "EN)",
-            "Sub(JP-EN-SP-FR-CH)",
-            "Chap"
-        ],
-        "release_group": "TV-J",
-        "source": "BD",
+        'other': 'Chap',
+        'release_group': 'TV-J',
+        'source': 'BD',
+        'subtitles': ['Sub', 'JP-EN-SP-FR-CH'],
         "video_resolution": "1920x1080",
         "video_term": "h264"
     },
@@ -2013,7 +2018,7 @@ table = [
         "video_term": "x264"
     },
     {
-        "anime_title": "R.O.D the TV",
+        "anime_title": "R O D the TV",
         "episode_number": 1,
         "file_extension": "mkv",
         "file_name": "[a4e]R.O.D_the_TV_01[divx5.2.1].mkv",
@@ -2060,13 +2065,10 @@ table = [
         "episode_prefix": "episode",
         "file_extension": "mkv",
         "file_name": "[kito].Nazca.episode.01.DVDRip.[x264.He-aac.{Jpn}+Sub{Fr}].mkv",
-        "other": [
-            "He-aac",
-            "{Jpn}",
-            "Sub{Fr}"
-        ],
-        "release_group": "kito",
-        "source": "DVDRip",
+        'other': 'He-aac.{Jpn}',
+        'release_group': 'kito',
+        'source': 'DVDRip',
+        'subtitles': ['Sub', 'Fr'],
         "video_term": "x264"
     },
     {
@@ -2103,5 +2105,35 @@ table = [
             "x265",
             "10Bit"
         ]
+    },
+    {
+        'anime_title': 'A Certain Scientific Railgun',
+        'anime_season_prefix': 'S',
+        'anime_season': 2,
+        'file_name': 'A.Certain.Scientific.Railgun.S02.1080p-Hi10p.BluRay.FLAC2.0.x264-CTR (English Dubbed Dual Audio)',
+        'video_resolution': '1080p',
+        'video_term': 'Hi10p',
+        'source': 'BluRay',
+        'other': ['FLAC2.0', 'x264-CTR'],
+        'language': 'English',
+        'subtitles': 'Dubbed',
+        'audio_term': 'Dual Audio'
+    },
+    {
+        "anime_season": [1, 2, 3, 4],
+        "anime_season_prefix": ["S", "S", "S", "S"],
+        "anime_title": "Sword Art Online",
+        "audio_term": ["Dual Audio", "AAC"],
+        "batch": [1, 2, 3, 4, "Alternative", "Movies", "Specials", "OVAs"],
+        "file_name": "[Anime Time] Sword Art Online (S01+S02+S03+S04+Alternative+Movies+Specials+OVAs) "
+                     "[BD] [Dual Audio][1080p][HEVC 10bit x265][AAC][Eng Sub] [Batch] (SAO)",
+        "language": "Eng",
+        "other": ["Alternative", "Movies", "Specials", "OVAs", "SAO"],
+        "release_group": "Anime Time",
+        "release_information": "Batch",
+        "source": "BD",
+        "subtitles": "Sub",
+        "video_resolution": "1080p",
+        "video_term": ["HEVC", "10bit", "x265"]
     }
 ]

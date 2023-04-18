@@ -1,6 +1,6 @@
 import logging
 
-from aniparse import parser_helper, parser_number
+from aniparse import parser_helper, parser_number, tokenizer
 from aniparse.element import ElementCategory
 from aniparse.parser_number import ParserNumber
 from aniparse.token import TokenCategory, TokenFlags, Token
@@ -602,10 +602,43 @@ class Parser(Tokenizer, ParserNumber):
                             self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.EPISODE_NUMBER_ALT)
 
         # Fill the unknown tokens with the keywords
+        double_check = []
         for token in self.get_list(TokenFlags.UNKNOWN):
             keyword = self.keyword_manager.find(self.keyword_manager.normalize(token.content))
             if keyword:
                 self.set_token_element(token, TokenCategory.IDENTIFIER, keyword.e_category)
+
+            if token.content[0] in tokenizer.open_brackets:
+                double_check.append(token)
+            else:
+                for char in tokenizer.open_brackets:
+                    if char in token.content:
+                        index = token.content.index(char)
+                        keyword = self.keyword_manager.find(self.keyword_manager.normalize(token.content[:index]))
+                        if keyword:
+                            new_token = Token(token.content[:index], TokenCategory.IDENTIFIER, keyword.e_category,
+                                              enclosed=token.enclosed)
+                            self.insert(self.get_index(token), new_token)
+                            token.content = token.content[index + 1:]
+
+                            double_check.append(token)
+
+            if double_check:
+                if token not in double_check:
+                    double_check.append(token)
+                if token.content[-1] in tokenizer.close_brackets:
+                    start = double_check[0]
+                    previous_token = self.find_prev(start, TokenFlags.NOT_DELIMITER)
+
+                    for tok in double_check:
+                        if previous_token.t_category != TokenCategory.UNKNOWN:
+                            if tok.content[0] in tokenizer.open_brackets:
+                                tok.content = tok.content[1:]
+                            if tok.content[-1] in tokenizer.close_brackets:
+                                tok.content = tok.content[:-1]
+                        tok.e_category = previous_token.e_category
+                        tok.t_category = previous_token.t_category
+                    double_check = []
 
         tokens = self.get_list(elements=ElementCategory.EPISODE_TITLE)
         real_token = []
@@ -648,7 +681,7 @@ class Parser(Tokenizer, ParserNumber):
                                       element=[
                                           ElementCategory.EPISODE_NUMBER,
                                       ])
-        if token_season:
+        if token_season and not token_season.enclosed:
             token_end = token_type or token_number
             if token_end:
                 actually_a_title = False
@@ -666,7 +699,7 @@ class Parser(Tokenizer, ParserNumber):
                             token.content = str(int(token.content))
                         self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.ANIME_TITLE)
 
-        if token_type and token_number:
+        if token_type and not token_type.enclosed and token_number:
             actually_a_title = False
             for token in self.get_list(TokenFlags.UNKNOWN, token_type, token_number):
                 if parser_helper.is_dash_character(token.content) or not token.content:
@@ -710,3 +743,48 @@ class Parser(Tokenizer, ParserNumber):
                         if token.t_category == TokenCategory.DELIMITER:
                             token.content = " "
                         self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.ANIME_TITLE)
+
+        # Check for anime type batch.
+        anime_title_token = self.find_prev(None, flags=TokenFlags.IDENTIFIER, element=ElementCategory.ANIME_TITLE)
+        next_token = self.find_next(anime_title_token, flags=TokenFlags.IDENTIFIER | TokenFlags.BRACKET)
+
+        if next_token and next_token.t_category == TokenCategory.BRACKET:
+            close_bracket = self.find_next(next_token, flags=TokenFlags.BRACKET)
+            tokens = {}
+            for token in self.get_list(None, next_token, close_bracket):
+                tokens.setdefault(token.e_category, []).append(token)
+            all_is_plus = []
+            for token in tokens.get(ElementCategory.DELIMITER, []):
+                all_is_plus.append(token.content == "+")
+            all_is_plus = all(all_is_plus) and len(all_is_plus) > 0
+            if all_is_plus:
+                buffer = []
+                remove_later = []
+                for token in self.get_list(None, next_token, close_bracket):
+                    if token.t_category == TokenCategory.BRACKET:
+                        continue
+                    if token.e_category in ElementCategory.ANIME_SEASON:
+                        self.batch.append(token)
+                        continue
+                    if token.e_category in ElementCategory.ANIME_SEASON_PREFIX:
+                        continue
+
+                    if token.e_category == ElementCategory.DELIMITER:
+                        if buffer:
+                            content = " ".join([tok.content for tok in buffer])
+                            buffer[0].content = content
+                            buffer[0].e_category = ElementCategory.OTHER
+                            self.batch.append(buffer[0])
+                            remove_later.extend(buffer[1:])
+                            buffer = []
+                    else:
+                        buffer.append(token)
+                if buffer:
+                    content = " ".join([tok.content for tok in buffer])
+                    buffer[0].content = content
+                    buffer[0].e_category = ElementCategory.OTHER
+                    self.batch.append(buffer[0])
+                    remove_later.extend(buffer[1:])
+                    buffer = []
+                for token in remove_later:
+                    self.remove_token(token)

@@ -33,18 +33,68 @@ class Aniparse(Parser):
         Populate the anime dictionary with the elements and tokens
         :return:
         """
+        enclosed = False
+        others = []
         for token in self.tokens:
             element = token.e_category
             if token.t_category == TokenCategory.INVALID:
                 continue
 
             if token.t_category == TokenCategory.BRACKET:
+                enclosed = not enclosed
+                for t in others:
+                    if t.e_category != ElementCategory.OTHER:
+                        continue
+                    this_element = t.e_category.value
+                    if this_element in self.anime:
+                        if not isinstance(self.anime[this_element], list):
+                            self.anime[this_element] = [self.anime[this_element]]
+                        self.anime[this_element].append(t.content)
+                    else:
+                        self.anime[this_element] = t.content
+                others = []
                 continue
-            if token.t_category == TokenCategory.DELIMITER:
+            if token.t_category == TokenCategory.DELIMITER and token.e_category == ElementCategory.DELIMITER:
+                if others:
+                    if token.content == "+":
+                        content = "".join([t.content for t in others])
+                        others[0].content = content
+                        token = others[0]
+                        element = token.e_category.value
+                        if element in self.anime:
+                            if not isinstance(self.anime[element], list):
+                                self.anime[element] = [self.anime[element]]
+                            self.anime[element].append(token.content)
+                        else:
+                            self.anime[element] = token.content
+                        others = []
+                    else:
+                        others.append(token)
                 continue
 
             if token.t_category == TokenCategory.UNKNOWN or element == ElementCategory.UNKNOWN:
-                element = ElementCategory.OTHER
+                if self.options["ignored_dash"]:
+                    if parser_helper.is_dash_character(token.content):
+                        continue
+                token.e_category = ElementCategory.OTHER
+                others.append(token)
+                continue
+
+            if others:
+                for t in others:
+                    if t.e_category != ElementCategory.OTHER:
+                        continue
+                    if self.options["ignored_dash"]:
+                        if parser_helper.is_dash_character(t.content):
+                            continue
+                    this_element = t.e_category.value
+                    if this_element in self.anime:
+                        if not isinstance(self.anime[this_element], list):
+                            self.anime[this_element] = [self.anime[this_element]]
+                        self.anime[this_element].append(t.content)
+                    else:
+                        self.anime[this_element] = t.content
+                others = []
 
             if self.options["ignored_dash"]:
                 if parser_helper.is_dash_character(token.content):
@@ -73,6 +123,22 @@ class Aniparse(Parser):
                 self.anime[element].append(token.content)
             else:
                 self.anime[element] = token.content
+        if others:
+            for t in others:
+                if t.e_category != ElementCategory.OTHER:
+                    continue
+                if self.options["ignored_dash"]:
+                    if parser_helper.is_dash_character(t.content):
+                        continue
+                this_element = t.e_category.value
+                if this_element in self.anime:
+                    if not isinstance(self.anime[this_element], list):
+                        self.anime[this_element] = [self.anime[this_element]]
+                    self.anime[this_element].append(t.content)
+                else:
+                    self.anime[this_element] = t.content
+        for token in self.batch:
+            self.anime.setdefault(ElementCategory.BATCH.value, []).append(token.content)
         # clean up the anime dictionary
         for element in [ElementCategory.ANIME_TITLE,
                         ElementCategory.ANIME_TITLE_ALT,

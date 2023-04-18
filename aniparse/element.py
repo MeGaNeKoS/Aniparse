@@ -9,6 +9,7 @@ class ElementCategory(enum.Enum):
     ANIME_TYPE = 'anime_type'
     ANIME_YEAR = 'anime_year'
     AUDIO_TERM = 'audio_term'
+    BATCH = 'batch'  # Special token to mark a batch release. Use in validate_elements only
     DEVICE_COMPATIBILITY = 'device_compatibility'
     BRACKET = 'bracket'
     DELIMITER = 'delimiter'

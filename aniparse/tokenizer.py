@@ -57,9 +57,16 @@ class Tokenizer(Tokens):
     def __init__(self, filename: str, options: dict, keyword_manager: KeywordManager):
         self.filename = filename
         self.options = options
-        delimiters = ''.join(
-            ['\\' + d for d in self.options['allowed_delimiters']])
-        self.pattern = '([{0}])'.format(delimiters)
+        self.batch = []
+        allowed_delimiter = self.options['allowed_delimiters']
+        escaped_delimiters = [re.escape(d) for d in allowed_delimiter]
+        if '.' in allowed_delimiter:
+            dot_with_digit_before = r'(?<!\d)\.|\.(?!\d)'
+            escaped_delimiters.remove(re.escape('.'))
+            delimiter_pattern = '|'.join(escaped_delimiters + [dot_with_digit_before])
+        else:
+            delimiter_pattern = '|'.join(escaped_delimiters)
+        self.pattern = re.compile(f"({delimiter_pattern})", flags=re.IGNORECASE)
         super().__init__(keyword_manager)
 
     @staticmethod
@@ -213,7 +220,7 @@ class Tokenizer(Tokens):
             self._tokenize_by_delimiters(text[last_token_end_pos:], enclosed)
 
     def _tokenize_by_delimiters(self, text, enclosed) -> None:
-        splited_text = re.split(self.pattern, text)
+        splited_text = self.pattern.split(text)
         new_tokens = Tokens(self.keyword_manager)  # Create a new Tokens object to store the new tokens
         for sub_text in splited_text:
             if sub_text:
