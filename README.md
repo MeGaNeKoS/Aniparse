@@ -3,6 +3,14 @@
 Aniparse is a Python library for parsing anime video filenames. It's simple to use, and it's based on the C++
 library [Anitomy](https://github.com/erengy/anitomy) with a lot of improvement.
 
+## Update
+
+This library has already achieved its goal in a somewhat hacky way, as discussed in [issue #9](https://github.com/MeGaNeKoS/Aniparse/issues/9). 
+I am aware that the last commit isn't the clean code, but I don't have much time to work on this project anymore. 
+It's a sacrifice I have to make. I don't expect any improvements here for another year or so unless something breaks. 
+If you have an interest in this project, I would suggest you take a look at the [v2-idea](https://github.com/MeGaNeKoS/Aniparse/tree/v2-idea) branch instead. 
+I've documented the library's goals, how I plan to achieve them, and other details more comprehensively in that branch.
+
 ## Example
 
 The following filename
@@ -107,6 +115,7 @@ inside a bracket.
 In this case, `KAA` is unknown token, and it inside a bracket, so it assigned to the `ReleaseGroup` category.
 
 ```text
+
 ```
 
 the next step is to look for the episode title. The parser will try to find unknown token after the episode number and
@@ -114,6 +123,7 @@ not inside a bracket.
 In this case, no more unknown token left, so it leave it empty
 
 ```text
+
 ```
 
 lastly, the parser will try to find any unknown token and assign it to each category or to `Others` if it is not
@@ -126,12 +136,11 @@ and all the technical details are enclosed within brackets.
 However, fansub groups tend to use their own naming conventions,
 and the problem is more complicated than it first appears:
 
-    Element order is not always the same.
-    Technical information is not guaranteed to be enclosed.
-    Brackets and parentheses may be grouping symbols or a part of the anime/episode title.
-    Space and underscore are not the only delimiters in use.
-    A single filename may contain multiple delimiters.
-
+Element order is not always the same.
+Technical information is not guaranteed to be enclosed.
+Brackets and parentheses may be grouping symbols or a part of the anime/episode title.
+Space and underscore are not the only delimiters in use.
+A single filename may contain multiple delimiters.
 There are so many cases to cover that it's simply not possible to parse all filenames solely with
 regular expressions. Aniparse tries a different approach, and it succeeds:
 It's able to parse tens of thousands of filenames, with great accuracy.
@@ -141,13 +150,11 @@ It's able to parse tens of thousands of filenames, with great accuracy.
 Yes, unfortunately. Aniparse fails to identify the anime title and episode number on rare occasions,
 mostly due to bad naming conventions. See the examples below.
 
-    Arigatou.Shuffle!.Ep08.[x264.AAC][D6E43829].mkv
-
+Arigatou.Shuffle!.Ep08.[x264.AAC][D6E43829].mkv
 Here, Aniparse would report that this file is the 8th episode of `Arigatou Shuffle!`, where `Arigatou` is actually the
 name of the fansub group.
 
-    Spice and Wolf 2
-
+Spice and Wolf 2
 Is this the 2nd episode of `Spice and Wolf`, or a batch release of `Spice and Wolf 2`? with a text after number, there's
 no way to know. It's up to you consider both cases. For current version, it treats as part of title if it's not leading zero,
 and as episode number if it's leading zero.
@@ -172,13 +179,11 @@ To install Aniparse, simply use pip:
 ```commandline
 pip install aniparse
 ```
-
 Or download the source code and inside the source code's folder run:
 
 ```commandline
 python setup.py install
 ```
-
 Options
 -------
 
@@ -198,14 +203,14 @@ aniparse.parse('DRAMAtical Murder Episode 1 - Data_01_Login', options=aniparse_o
     'file_name': 'DRAMAtical Murder Episode 1 - Data_01_Login'
 }
 ```
-
 If the default options had been used, the parser would have considered `_` as a delimiter and replaced it with space in
 the episode title.
 
 The options contain the following attributes:
 
+
 | **Attribute name**   | **Type**        | **Description**                                                 | **Default value** |
-|----------------------|-----------------|-----------------------------------------------------------------|-------------------|
+| -------------------- | --------------- | --------------------------------------------------------------- | ----------------- |
 | allowed_delimiters   | string          | The list of character to be considered as delimiters.           | ' _.&+,&#124;'    |
 | check_title_enclosed | boolean         | Check the anime title in enclosed if no title found             | True              |
 | eps_lower_than_alt   | boolean         | Set episode number to the lowest and the alt to be the highest  | True              |
@@ -216,4 +221,5 @@ The options contain the following attributes:
 | title_before_episode | boolean         | If the anime title should be before the episode number or not.  | True              |
 
 ## License
+
 *Aniparse* is licensed under [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/2.0/FAQ/).
