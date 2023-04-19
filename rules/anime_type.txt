@@ -1,0 +1,5 @@
+Rule 1:  # process_keyword_token [keyword.options.searchable]
+    If the keyword's searchable option is set to False, find the next token that is not a delimiter.
+    The current token is considered valid and categorized as ANIME_TYPE if:
+        a. It is at the end of the filename (there is no next token)
+        b. The previous token is a context delimiter.

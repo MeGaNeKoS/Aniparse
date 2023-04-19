@@ -1,0 +1,7 @@
+Rule 1:  # is_anime_season_keyword
+    A token is considered a valid anime season prefix if:
+        a. The previous token is an ordinal (e.g., 1st, 2nd, 3rd) or
+        b. The next token is a number.
+    However, if there is a "part" keyword followed by a digit after the ordinal or number, the token's validity depends on the season_part_as_unique option:
+        a. If season_part_as_unique is enabled, the token is not considered a valid anime season prefix.
+        b. If season_part_as_unique is disabled, the token is considered a valid anime season prefix.
