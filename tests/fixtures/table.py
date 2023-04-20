@@ -6,11 +6,24 @@ table = [
         "file_name": "01 - Land of Visible Pain.mkv"
     },
     {
-        "anime_title": "37 [Ruberia] Death Note",
+        "anime_title": "Death Note",
         "episode_number": 37,
         "file_checksum": "6FA7D273",
         "file_extension": "avi",
+        "file_index": 37,
         "file_name": "37 [Ruberia]_Death_Note_-_37v2_[FINAL]_[XviD][6FA7D273].avi",
+        "release_information": "FINAL",
+        "release_group": "Ruberia",
+        "release_version": 2,
+        "video_term": "XviD"
+    },
+    {
+        "anime_title": "Death Note",
+        "episode_number": 37,
+        "file_checksum": "6FA7D273",
+        "file_extension": "avi",
+        "file_index": 24,
+        "file_name": "24._Death_Note_-_37v2_[FINAL]_[XviD][6FA7D273].avi",
         "release_information": "FINAL",
         "release_version": 2,
         "video_term": "XviD"

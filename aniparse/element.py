@@ -21,6 +21,7 @@ class ElementCategory(enum.Enum):
     EPISODE_TOTAL = 'episode_total'
     FILE_CHECKSUM = 'file_checksum'
     FILE_EXTENSION = 'file_extension'
+    FILE_INDEX = 'file_index'
     FILE_NAME = 'file_name'
     LANGUAGE = 'language'
     OTHER = 'other'

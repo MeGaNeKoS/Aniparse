@@ -107,7 +107,8 @@ class Aniparse(Parser):
                 ElementCategory.EPISODE_NUMBER_ALT,
                 ElementCategory.EPISODE_TOTAL,
                 ElementCategory.RELEASE_VERSION,
-                ElementCategory.VOLUME_NUMBER
+                ElementCategory.VOLUME_NUMBER,
+                ElementCategory.FILE_INDEX
             ]:
                 # set the content to be a number, or float if it has a decimal
                 try:

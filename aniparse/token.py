@@ -178,7 +178,8 @@ class Tokens:
                 next_delimiter = next_token.content
                 if delimiter != next_delimiter and delimiter != ',':
                     if next_delimiter == ' ' or next_delimiter == '_':
-                        append_token_to(token, prev_token)  # e.g. "." in "Vol. ", "Ep. "
+                        if not prev_token.content.isdigit():  # prevent "02. " got appended
+                            append_token_to(token, prev_token)  # e.g. "." in "Vol. ", "Ep. "
 
             elif is_delimiter_token(prev_token) and \
                     is_delimiter_token(next_token):

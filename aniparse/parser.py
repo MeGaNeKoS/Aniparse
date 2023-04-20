@@ -110,7 +110,29 @@ class Parser(Tokenizer, ParserNumber):
             if len(tokens) == 1:
                 if tokens[0].content in "&":
                     self.set_token_element(tokens[0], TokenCategory.INVALID, ElementCategory.RANGE_SEPARATOR)
+        found_number = False
+        for token in self.tokens:
+            if token.t_category == TokenCategory.DELIMITER:
+                continue
 
+            if token and parser_helper.find_number_in_string(token.content) is not None:
+                prev_token = self.find_prev(token, TokenFlags.NOT_DELIMITER)
+                if not prev_token or prev_token == token:
+                    first_next_token = self.find_next(token)
+                    first_not_delimiter_token = self.find_next(token, TokenFlags.NOT_DELIMITER)
+                    if first_next_token:
+                        second_next_token = self.find_next(first_next_token, flags=TokenFlags.BRACKET | TokenFlags.DELIMITER)
+                        if (second_next_token and
+                                first_next_token.t_category == second_next_token.t_category == TokenCategory.DELIMITER and
+                                first_next_token.content != second_next_token.content):
+                            self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.FILE_INDEX)
+                            break
+                    if first_not_delimiter_token and first_not_delimiter_token.t_category == TokenCategory.BRACKET:
+                        self.set_token_element(token, TokenCategory.IDENTIFIER, ElementCategory.FILE_INDEX)
+                        break
+
+            if token.t_category == TokenCategory.UNKNOWN:
+                break
         self.search_for_anime_title()
 
         self.search_for_episode_title()
