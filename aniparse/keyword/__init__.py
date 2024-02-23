@@ -1,5 +1,5 @@
 from aniparse import constant
-from aniparse.element import DescriptorType
+from aniparse.element import Label
 from aniparse.keyword.AUDIO_TERM import audio_term_prefix, audio_term_suffix
 from aniparse.keyword.BRACKET import bracket_prefix
 from aniparse.keyword.CONTEXT_DELIMITER import context_delimiters
@@ -9,7 +9,7 @@ from aniparse.keyword.DEVICE_COMPATIBILITY import device_compatibility_prefix
 from aniparse.keyword.EPISODE_PREFIX import episode_prefix
 from aniparse.abstraction.KeywordBase import ElementEntry
 from aniparse.keyword.LANG import language_prefix
-from aniparse.keyword.OTHER import other_prefix
+
 from aniparse.keyword.RELEASE_INFORMATION import release_information_prefix
 from aniparse.keyword.RELEASE_VERSION import release_version_prefix
 from aniparse.keyword.SEASON_PREFIX import season_prefix
@@ -27,7 +27,6 @@ DEFAULT_PREFIX_KEYWORD = [
     *episode_prefix,
     *delimiters,
     *language_prefix,
-    *other_prefix,
     *release_information_prefix,
     *release_version_prefix,
     *season_prefix,
@@ -48,15 +47,15 @@ DEFAULT_SPECIAL_KEYWORD = [
     *context_dependent_prefix,
     *video_resolution_infix,
     ElementEntry(constant.CHECKSUM_PLACEHOLDER, set(), regex_dict={
-        r"\b[a-fA-F0-9]{8}": {0: {DescriptorType.FILE_CHECKSUM}}
+        r"\b[a-fA-F0-9]{8}": {0: {Label.FILE_CHECKSUM}}
     }),
     ElementEntry('OF', set(), regex_dict={
         r'(\d+)([\W_])?(OF)([\W_])?(\d+)': {
-            1: {DescriptorType.EPISODE_NUMBER},
-            2: {DescriptorType.CONTEXT_DELIMITER},
-            3: {DescriptorType.EPISODE_RANGE},
-            4: {DescriptorType.CONTEXT_DELIMITER},
-            5: {DescriptorType.EPISODE_TOTAL}
+            1: {Label.SEQUENCE_NUMBER},
+            2: {Label.CONTEXT_DELIMITER},
+            3: {Label.SEQUENCE_RANGE},
+            4: {Label.CONTEXT_DELIMITER},
+            5: {Label.SEQUENCE_NUMBER}
         }
     })
 ]

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import logging
 import re
 import warnings
@@ -8,6 +9,7 @@ from typing import List, Type
 from aniparse import WordListManager
 from aniparse.abstraction.ParserBase import AbstractParser, PossibilityRule
 from aniparse.abstraction.ScoreBase import Score
+from aniparse.element import Label, Metadata
 from aniparse.token import Tokens, Token
 from aniparse.tokenizer import Tokenizer
 
@@ -102,6 +104,13 @@ class ParserProcessor(BaseParser):
         for rule in self.possibility_rule:
             rule.apply(self)
 
+    def normalize_possibilities(self):
+        for token in self.tokens:
+            for candidate in copy.copy(token.possibilities):
+                if isinstance(candidate, Metadata):
+                    token.remove_possibility(candidate)
+                    token.add_possibility(Metadata.to_label(candidate))
+
     def score_token_possibilities(self):
         for token in self.tokens:
             if not token.possibilities:
@@ -117,4 +126,5 @@ class Parser(ParserProcessor):
             return None
 
         self.assign_possibilities()
-        # self.score_token_possibilities()
+        self.normalize_possibilities()
+        self.score_token_possibilities()

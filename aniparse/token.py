@@ -3,7 +3,7 @@ from collections import defaultdict
 from enum import Enum, auto
 from typing import Union, Iterator, Literal, List, Set, Dict
 
-from aniparse.element import DescriptorType
+from aniparse.element import Label, Metadata
 
 PossibilityAction = Literal['add', 'remove']
 
@@ -13,7 +13,7 @@ class Token:
     A class representing a token in a filename.
     """
 
-    def __init__(self, content: str, index: int, category: DescriptorType = DescriptorType.UNKNOWN):
+    def __init__(self, content: str, index: int, category: Label = Label.UNKNOWN):
         """
         Initializes a new Token instance.
 
@@ -26,7 +26,7 @@ class Token:
         self.original = content
         self.index = index
         self._category = category
-        self._possibilities: Dict[DescriptorType, int] = {}
+        self._possibilities: Dict[Label, int] = {}
 
         self._observers = weakref.WeakSet()
 
@@ -40,12 +40,12 @@ class Token:
                 f"\tpossibilities={[pos for pos in self.possibilities]}\n)")
 
     @property
-    def possibilities(self) -> Dict[DescriptorType, int]:
+    def possibilities(self) -> Dict[Label, int]:
         """
         Get the possibilities of the token.
 
         Return:
-            Iterator[DescriptorType]: The possibilities of the token.
+            Iterator[Label]: The possibilities of the token.
         """
         return self._possibilities
 
@@ -64,7 +64,7 @@ class Token:
         # self._category = new_category
         # self._notify_category_observers(old_category)
 
-    def add_possibility(self, possibilities: Union[DescriptorType, List[DescriptorType], Set[DescriptorType]]):
+    def add_possibility(self, possibilities: Union[Label, List[Label], Set[Label]]):
         """
         Adds one or more ElementCategory possibilities to the Token instance.
         """
@@ -77,7 +77,7 @@ class Token:
 
         self._notify_possibilities_observers('add', possibilities)
 
-    def remove_possibility(self, possibilities: Union[DescriptorType, List[DescriptorType]] = None):
+    def remove_possibility(self, possibilities: Union[Label, List[Label], Metadata, List[Metadata]] = None):
         """
         Removes one or more ElementCategory possibilities from the Token instance.
         """
@@ -92,7 +92,7 @@ class Token:
 
         self._notify_possibilities_observers('remove', possibilities)
 
-    def _notify_category_observers(self, old_category: DescriptorType):
+    def _notify_category_observers(self, old_category: Label):
         """
         Notifies all observers of a changed ElementCategory category.
         """
@@ -136,8 +136,8 @@ class Tokens:
         Initialize a new `Tokens` object.
         """
         self.tokens: List[Token] = []
-        self.lookup_category: dict[DescriptorType, list] = {}
-        self.lookup_possibilities: dict[DescriptorType, list] = {}
+        self.lookup_category: dict[Label, list] = {}
+        self.lookup_possibilities: dict[Label, list] = {}
 
     def __iter__(self) -> Iterator[Token]:
         return iter(self.tokens)
@@ -160,8 +160,8 @@ class Tokens:
     @staticmethod
     def find_in_tokens(
             tokens: list[Token],
-            category_in: list[DescriptorType] = None,
-            category_not_in: list[DescriptorType] = None,
+            category_in: list[Label] = None,
+            category_not_in: list[Label] = None,
             content_in: list[str] = None,
             content_not_in: list[str] = None) -> Union['Token', None]:
         """
@@ -169,8 +169,8 @@ class Tokens:
 
         Parameters:
             tokens (list[Token]): The token list to search in.
-            category_in (DescriptorType): The element category to search for.
-            category_not_in (DescriptorType): The element category to exclude.
+            category_in (Label): The element category to search for.
+            category_not_in (Label): The element category to exclude.
 
         Returns:
             Token: The next token in the token list.
@@ -188,8 +188,8 @@ class Tokens:
 
     def find_next(self,
                   token: Token = None,
-                  category_in: list[DescriptorType] = None,
-                  category_not_in: list[DescriptorType] = None,
+                  category_in: list[Label] = None,
+                  category_not_in: list[Label] = None,
                   content_in: list[str] = None,
                   content_not_in: list[str] = None) -> Union['Token', None]:
         """
@@ -197,8 +197,8 @@ class Tokens:
 
         Parameters:
             token (Token): The token to start searching from.
-            category_in (DescriptorType): The element category to search for.
-            category_not_in (DescriptorType): The element category to exclude.
+            category_in (Label): The element category to search for.
+            category_not_in (Label): The element category to exclude.
 
         Returns:
             Token: The next token in the token list.
@@ -212,8 +212,8 @@ class Tokens:
 
     def find_prev(self,
                   token: Token = None,
-                  category_in: list[DescriptorType] = None,
-                  category_not_in: list[DescriptorType] = None,
+                  category_in: list[Label] = None,
+                  category_not_in: list[Label] = None,
                   content_in: list[str] = None,
                   content_not_in: list[str] = None) -> Union['Token', None]:
         """
@@ -221,8 +221,8 @@ class Tokens:
 
         Parameters:
             token (Token): The token to start searching from.
-            category_in (DescriptorType): The element category to search for.
-            category_not_in (DescriptorType): The element category to exclude.
+            category_in (Label): The element category to search for.
+            category_not_in (Label): The element category to exclude.
 
         Returns:
             Token: The previous token in the token list.
@@ -238,8 +238,8 @@ class Tokens:
     def find_in_between(self,
                         start_token: Token = None,
                         end_token: Token = None,
-                        category_in: list[DescriptorType] = None,
-                        category_not_in: list[DescriptorType] = None,
+                        category_in: list[Label] = None,
+                        category_not_in: list[Label] = None,
                         content_in: list[str] = None,
                         content_not_in: list[str] = None) -> Union['Token', None]:
         """
@@ -266,12 +266,12 @@ class Tokens:
         tokens = self.tokens[start_index:end_index]
         return self.find_in_tokens(tokens, category_in, category_not_in, content_in, content_not_in)
 
-    def get_categories(self, category: DescriptorType):
+    def get_categories(self, category: Label):
         """
         Retrieve tokens belonging to the specified category.
 
         Parameters:
-            category (DescriptorType): The category to filter tokens by.
+            category (Label): The category to filter tokens by.
 
         Returns:
             list[Token]: A list of tokens in the specified category.
@@ -332,7 +332,7 @@ class Tokens:
     def loop_forward(self,
                      begin: Token = None,
                      end: Token = None,
-                     category: Union[DescriptorType, list[DescriptorType]] = None) -> Iterator[Token]:
+                     category: Union[Label, list[Label]] = None) -> Iterator[Token]:
         """
         Iterate through the tokens list between the specified begin and end tokens, filtered by category.
 
@@ -356,7 +356,7 @@ class Tokens:
     def loop_backward(self,
                       end: Token = None,
                       begin: Token = None,
-                      category: Union[DescriptorType, list[DescriptorType]] = None) -> Iterator[Token]:
+                      category: Union[Label, list[Label]] = None) -> Iterator[Token]:
         """
         Iterate through the tokens list between the specified end and begin tokens in reverse order, filtered by category, excluding the end token.
 
@@ -391,27 +391,27 @@ class Tokens:
         self.lookup_category[token.category].remove(token)
         token.remove_observer(self)
 
-    def token_category_changed(self, token: Token, old_category: DescriptorType):
+    def token_category_changed(self, token: Token, old_category: Label):
         """
         Update the lookup_category when a token's category changes.
 
         Parameters:
             token (Token): The token whose category has changed.
-            old_category (DescriptorType): The old category of the token.
+            old_category (Label): The old category of the token.
         """
         self.lookup_category[old_category].remove(token)
         self.lookup_category[token.category].append(token)
 
     def token_possibilities_changed(self, token: Token,
                                     action: PossibilityAction,
-                                    possibilities: list[DescriptorType]):
+                                    possibilities: list[Label]):
         """
         Update the lookup_possibilities when a token's possibilities change.
 
         Parameters:
             token (Token): The token whose possibilities have changed.
             action (PossibilitiesAction): The action performed on the token's possibilities ('add' or 'remove').
-            possibilities (list[DescriptorType]): The list of ElementCategory possibilities that have been added or removed.
+            possibilities (list[Label]): The list of ElementCategory possibilities that have been added or removed.
         """
         if action == 'add':
             for possibility in possibilities:

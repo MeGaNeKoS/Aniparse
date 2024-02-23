@@ -1,6 +1,6 @@
 from aniparse import constant
 from aniparse.abstraction.ParserBase import PossibilityRule, AbstractParser
-from aniparse.element import DescriptorType
+from aniparse.element import Label
 from aniparse.parser import BaseParser
 from aniparse.token import Token
 
@@ -12,16 +12,16 @@ class ContextDependentExpansionPossibilityRule(PossibilityRule):
             if not token or not token.content:
                 continue
             # Check if the token is marked as context-dependent
-            if DescriptorType.CONTEXT_DEPENDENT not in token.possibilities:
+            if Label.CONTEXT_DEPENDENT not in token.possibilities:
                 continue
 
             if token.content.upper() in constant.DISAMBIGUATION_WORDS:
                 cls.handle_disambiguation_word(parser, token)
 
             if token.content.upper() in constant.DELIMITERS:
-                token.remove_possibility(DescriptorType.CONTEXT_DEPENDENT)
+                token.remove_possibility(Label.CONTEXT_DEPENDENT)
                 token.add_possibility([
-                    DescriptorType.DELIMITER
+                    Label.DELIMITER
                 ])
 
             if token.content.upper() in ["+", "&"]:
@@ -36,9 +36,9 @@ class ContextDependentExpansionPossibilityRule(PossibilityRule):
         if prev_token and next_token:
             for possibilities in prev_token.possibilities:
                 if not next_token.content.isdigit() and possibilities in [
-                    DescriptorType.SEASON_NUMBER,
-                    DescriptorType.EPISODE_NUMBER,
-                    DescriptorType.VOLUME_NUMBER,
+                    Label.SEQUENCE_NUMBER,
+                    Label.SEQUENCE_NUMBER,
+                    Label.SEQUENCE_NUMBER,
                 ]:
                     continue
                 next_token.add_possibility(possibilities)
@@ -49,11 +49,11 @@ class ContextDependentExpansionPossibilityRule(PossibilityRule):
         next_token = cls.get_next_relevant_token(parser, token)
 
         if word == "THE" and next_token and next_token.content.upper() in {'END', 'FINAL', "MOVIE", "MOVIES"}:
-            token.remove_possibility(DescriptorType.CONTEXT_DEPENDENT)
+            token.remove_possibility(Label.CONTEXT_DEPENDENT)
             next_token.remove_possibility()
 
         elif word == "PART" and next_token and next_token.content.isdigit():
-            token.remove_possibility(DescriptorType.CONTEXT_DEPENDENT)
+            token.remove_possibility(Label.CONTEXT_DEPENDENT)
             next_token.remove_possibility()
 
     @staticmethod

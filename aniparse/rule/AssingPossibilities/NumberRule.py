@@ -1,6 +1,6 @@
 from aniparse import constant
 from aniparse.abstraction.ParserBase import PossibilityRule
-from aniparse.element import DescriptorType
+from aniparse.element import Label
 from aniparse.parser import BaseParser
 from aniparse.token import Token
 
@@ -12,35 +12,37 @@ def get_number_from_ordinal(content) -> str:
 class NumberPossibilityRule(PossibilityRule):
     @classmethod
     def apply(cls, parser: BaseParser):
-        for sub_token in parser.tokens:
-            if DescriptorType.SEASON_PREFIX in sub_token.possibilities:
-                prev_token = cls.get_previous_relevant_token(parser, sub_token)
-                if prev_token and get_number_from_ordinal(prev_token.content).isdigit():
-                    prev_token.add_possibility(DescriptorType.SEASON_NUMBER)
+        for token in parser.tokens:
+            if Label.SEQUENCE_PREFIX in token.possibilities:
+                # Check for ordinal number like 2nd season
+                for prev_token in parser.tokens.loop_backward(token):
+                    if prev_token.content in constant.DELIMITERS:
+                        continue
+                    if get_number_from_ordinal(prev_token.content).isdigit():
+                        prev_token.add_possibility(Label.SEQUENCE_NUMBER)
+                    break
 
-            if sub_token.content.isdigit() and DescriptorType.FILE_CHECKSUM not in sub_token.possibilities:
-                sub_token.add_possibility(DescriptorType.EPISODE_NUMBER)
+            # Reduce checking for number that most likely a file checksum
+            if token.content.isdigit() and Label.FILE_CHECKSUM not in token.possibilities:
+                token.add_possibility(Label.SEQUENCE_NUMBER)
 
                 # Remove EPISODE_PREFIX if wrongly added before
-                if DescriptorType.EPISODE_PREFIX in sub_token.possibilities:
-                    sub_token.remove_possibility(DescriptorType.EPISODE_PREFIX)
+                if Label.SEQUENCE_PREFIX in token.possibilities:
+                    token.remove_possibility(Label.SEQUENCE_PREFIX)
 
-                prev_token = cls.get_previous_relevant_token(parser, sub_token)
-                next_token = cls.get_next_relevant_token(parser, sub_token)
+                prev_token = cls.prev_non_delimiter(parser, token)
+                next_token = cls.next_non_delimiter(parser, token)
 
                 if not prev_token or not next_token:
                     # File index only can be at the start or the end
-                    sub_token.add_possibility(DescriptorType.FILE_INDEX)
+                    token.add_possibility(Label.FILE_INDEX)
 
                 if prev_token and prev_token.content not in constant.BRACKETS:
-                    if DescriptorType.SEASON_PREFIX in prev_token.possibilities:
-                        sub_token.add_possibility(DescriptorType.SEASON_NUMBER)
-                        sub_token.remove_possibility(DescriptorType.EPISODE_NUMBER)
-                    if DescriptorType.EPISODE_PREFIX in prev_token.possibilities:
-                        sub_token.add_possibility(DescriptorType.EPISODE_NUMBER)
+                    if Label.SEQUENCE_PREFIX in prev_token.possibilities:
+                        token.add_possibility(Label.SEQUENCE_NUMBER)
 
                 if next_token and next_token.content not in constant.BRACKETS:
-                    for episode_range in parser.tokens.loop_forward(sub_token, next_token):
+                    for episode_range in parser.tokens.loop_forward(token, next_token):
                         if not episode_range:
                             break
 
@@ -48,44 +50,44 @@ class NumberPossibilityRule(PossibilityRule):
                             continue
                         if (
                                 next_token.content.isdigit() or
-                                DescriptorType.EPISODE_NUMBER in next_token.possibilities or
-                                DescriptorType.EPISODE_PREFIX in next_token.possibilities or
-                                DescriptorType.EPISODE_TOTAL in next_token.possibilities
+                                Label.SEQUENCE_NUMBER in next_token.possibilities or
+                                Label.SEQUENCE_PREFIX in next_token.possibilities or
+                                Label.SEQUENCE_NUMBER in next_token.possibilities
                         ):
-                            if DescriptorType.EPISODE_RANGE not in next_token.possibilities:
-                                episode_range.add_possibility(DescriptorType.EPISODE_RANGE)
-                    if get_number_from_ordinal(sub_token.content + next_token.content).isdigit():
-                        sub_token.add_possibility(DescriptorType.SEASON_NUMBER)
-                        sub_token.remove_possibility(DescriptorType.EPISODE_NUMBER)
-                        next_token.add_possibility(DescriptorType.SEASON_NUMBER)
+                            if Label.SEQUENCE_RANGE not in next_token.possibilities:
+                                episode_range.add_possibility(Label.SEQUENCE_RANGE)
+                                next_token.add_possibility(Label.SEQUENCE_NUMBER)
 
-                    if DescriptorType.EPISODE_PREFIX in next_token.possibilities:
-                        sub_token.add_possibility(DescriptorType.SEASON_NUMBER)
+                    if get_number_from_ordinal(token.content + next_token.content).isdigit():
+                        token.add_possibility(Label.SEQUENCE_NUMBER)
+                        token.remove_possibility(Label.SEQUENCE_NUMBER)
+                        next_token.add_possibility(Label.SEQUENCE_NUMBER)
+
                     if next_token.content.isdigit():
                         # check if there's a token in between
-                        if parser.tokens.get_index(next_token) - parser.tokens.get_index(sub_token) > 1:
-                            skipped_word = parser.filename[sub_token.index + len(sub_token.content):next_token.index]
+                        if parser.tokens.get_index(next_token) - parser.tokens.get_index(token) > 1:
+                            skipped_word = parser.filename[token.index + len(token.content):next_token.index]
                             if len(skipped_word) == 3 and skipped_word[0] == skipped_word[2]:
                                 skipped_word = skipped_word[1]
                             if any([char for char in skipped_word.upper() if char in ["."]]):
-                                if sub_token.content > next_token.content:
-                                    sub_token.add_possibility(DescriptorType.AUDIO_TERM)
-                                    next_token.add_possibility(DescriptorType.AUDIO_TERM)
-                                elif DescriptorType.AUDIO_TERM in sub_token.possibilities:
-                                    next_token.add_possibility(DescriptorType.AUDIO_TERM)
+                                if token.content > next_token.content:
+                                    token.add_possibility(Label.AUDIO_TERM)
+                                    next_token.add_possibility(Label.AUDIO_TERM)
+                                elif Label.AUDIO_TERM in token.possibilities:
+                                    next_token.add_possibility(Label.AUDIO_TERM)
 
     @staticmethod
-    def get_next_relevant_token(parser: BaseParser, current_token: Token):
+    def next_non_delimiter(parser: BaseParser, current_token: Token):
         for next_token in parser.tokens.loop_forward(current_token):
-            if next_token.content in constant.DELIMITERS or next_token.content in constant.BRACKETS:
+            if Label.DELIMITER in next_token.possibilities:
                 continue
             return next_token
         return None
 
     @staticmethod
-    def get_previous_relevant_token(parser, current_token):
+    def prev_non_delimiter(parser, current_token):
         for prev_token in parser.tokens.loop_backward(current_token):
-            if prev_token.content in constant.DELIMITERS or prev_token.content in constant.BRACKETS:
+            if Label.DELIMITER in prev_token.possibilities:
                 continue
             return prev_token
         return None
