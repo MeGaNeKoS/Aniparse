@@ -1,15 +1,15 @@
-from aniparse.element import Label
+from aniparse.token_tags import Descriptor
 from aniparse.abstraction.KeywordBase import ElementEntry
 
 language_prefix = [
-    ElementEntry('ENG', {Label.LANGUAGE}),
-    ElementEntry('ENGLISH', {Label.LANGUAGE}),
-    ElementEntry('ESPANOL', {Label.LANGUAGE}),
-    ElementEntry('JAP', {Label.LANGUAGE}),
-    ElementEntry('PT', {Label.LANGUAGE}, regex_dict={r'PT[\W_]?BR': {0: {Label.LANGUAGE}}}),
-    ElementEntry('PTBR', {Label.LANGUAGE}, regex_dict={r'PT[\W_]?BR': {0: {Label.LANGUAGE}}}),
-    ElementEntry('SPANISH', {Label.LANGUAGE}),
-    ElementEntry('VOSTFR', {Label.LANGUAGE}),
-    ElementEntry('ESP', {Label.LANGUAGE}),
-    ElementEntry('ITA', {Label.LANGUAGE})
+    ElementEntry('ENG', {Descriptor.LANGUAGE}),
+    ElementEntry('ENGLISH', {Descriptor.LANGUAGE}),
+    ElementEntry('ESPANOL', {Descriptor.LANGUAGE}),
+    ElementEntry('JAP', {Descriptor.LANGUAGE}),
+    ElementEntry('PT', {Descriptor.LANGUAGE}, regex_dict={r'PT[\W_]?BR': {0: {Descriptor.LANGUAGE}}}),
+    ElementEntry('PTBR', {Descriptor.LANGUAGE}),
+    ElementEntry('SPANISH', {Descriptor.LANGUAGE}),
+    ElementEntry('VOSTFR', {Descriptor.LANGUAGE}),
+    ElementEntry('ESP', {Descriptor.LANGUAGE}),
+    ElementEntry('ITA', {Descriptor.LANGUAGE})
 ]

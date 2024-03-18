@@ -1,12 +1,12 @@
 from math import gcd
 
 from aniparse.abstraction.ScoreBase import ScoreRule
-from aniparse.element import Label
+from aniparse.token_tags import Category
 from aniparse.token import Token, Tokens
 
 
 class VideoResolutionScoreRule(ScoreRule):
-    descriptorType = Label.VIDEO_RESOLUTION
+    descriptorType = Category.VIDEO_RESOLUTION
 
     @classmethod
     def apply(cls, token: Token, tokens: Tokens):
@@ -21,35 +21,35 @@ class VideoResolutionScoreRule(ScoreRule):
     @classmethod
     def check_neighbor_tokens(cls, start_token: Token, tokens: Tokens, video_resolution_tokens: list[Token]):
         for prev_token in tokens.loop_backward(start_token):
-            if Label.BRACKET in prev_token.possibilities:
+            if Category.BRACKET in prev_token.possibilities:
                 for token in video_resolution_tokens:
-                    token.possibilities[cls.descriptorType] += 0.25
+                    token.possibilities[cls.descriptorType]["score"] += 0.25
                 break
-            if Label.additional_video_information(prev_token.possibilities):
+            if Category.additional_video_information(prev_token.possibilities):
                 for token in video_resolution_tokens:
-                    token.possibilities[cls.descriptorType] += 0.25
+                    token.possibilities[cls.descriptorType]["score"] += 0.25
                 for possibilities in prev_token.possibilities:
-                    if Label.additional_video_information([possibilities]):
-                        prev_token.possibilities[possibilities] += 0.25
+                    if Category.additional_video_information([possibilities]):
+                        prev_token.possibilities[possibilities]["score"] += 0.25
                 break
-            if Label.DELIMITER not in prev_token.possibilities:
+            if Category.DELIMITER not in prev_token.possibilities:
                 break
 
         for next_token in tokens.loop_forward(start_token):
-            if Label.BRACKET in next_token.possibilities:
+            if Category.BRACKET in next_token.possibilities:
                 for token in video_resolution_tokens:
-                    token.possibilities[cls.descriptorType] += 0.25
+                    token.possibilities[cls.descriptorType]["score"] += 0.25
                 break
 
-            if Label.additional_video_information(next_token.possibilities):
+            if Category.additional_video_information(next_token.possibilities):
                 for token in video_resolution_tokens:
-                    token.possibilities[cls.descriptorType] += 0.25
+                    token.possibilities[cls.descriptorType]["score"] += 0.25
 
                 for possibilities in next_token.possibilities:
-                    if Label.additional_video_information([possibilities]):
-                        next_token.possibilities[possibilities] += 0.25
+                    if Category.additional_video_information([possibilities]):
+                        next_token.possibilities[possibilities]["score"] += 0.25
                 break
-            if Label.DELIMITER not in next_token.possibilities:
+            if Category.DELIMITER not in next_token.possibilities:
                 break
 
     @classmethod
@@ -59,9 +59,9 @@ class VideoResolutionScoreRule(ScoreRule):
         # Usually video resolution over 480p
         for token in number_tokens:
             if int(token.content) > 100:
-                token.possibilities[cls.descriptorType] += 0.25
+                token.possibilities[cls.descriptorType]["score"] += 0.25
             else:
-                token.possibilities[cls.descriptorType] -= 0.5
+                token.possibilities[cls.descriptorType]["score"] -= 0.5
         if len(number_tokens) == 2:
             # Calculate the video resolution ratio like 16:9, 4:3, etc
             a = int(number_tokens[0].content)
@@ -93,36 +93,36 @@ class VideoResolutionScoreRule(ScoreRule):
                 if error <= tolerance:
                     for token in video_resolution_tokens:
                         # 0.25 because we're going to apply this twice, [1920 (1), x, 1080 (2)]
-                        token.possibilities[Label.VIDEO_RESOLUTION] += round(0.25 * (1 - error), 2)
+                        token.possibilities[Category.VIDEO_RESOLUTION]["score"] += round(0.25 * (1 - error), 2)
                     break
 
         # Check for other common format like [xxx], [xxx, p], [xxx, i], [x, k]
         if len(video_resolution_tokens) == 1:
             if int(number_tokens[0].content) > 100:
-                video_resolution_tokens[0].possibilities[cls.descriptorType] += 0.25
+                video_resolution_tokens[0].possibilities[cls.descriptorType]["score"] += 0.25
         elif len(video_resolution_tokens) == 2:
             if int(number_tokens[0].content) > 100:
-                video_resolution_tokens[0].possibilities[cls.descriptorType] += 0.25
+                video_resolution_tokens[0].possibilities[cls.descriptorType]["score"] += 0.25
                 if video_resolution_tokens[1].content in ['p', 'i']:
-                    video_resolution_tokens[0].possibilities[cls.descriptorType] += 0.5
-                    video_resolution_tokens[1].possibilities[cls.descriptorType] += 0.5
+                    video_resolution_tokens[0].possibilities[cls.descriptorType]["score"] += 0.5
+                    video_resolution_tokens[1].possibilities[cls.descriptorType]["score"] += 0.5
             if video_resolution_tokens[1].content in ['k']:
-                video_resolution_tokens[0].possibilities[cls.descriptorType] += 0.25
-                video_resolution_tokens[1].possibilities[cls.descriptorType] += 0.25
+                video_resolution_tokens[0].possibilities[cls.descriptorType]["score"] += 0.25
+                video_resolution_tokens[1].possibilities[cls.descriptorType]["score"] += 0.25
 
     @classmethod
     def get_video_resolution_tokens(cls, start_token: Token, tokens: Tokens):
         video_resolution_tokens = []
         for prev_token in tokens.loop_backward(start_token):
-            if (Label.VIDEO_RESOLUTION not in prev_token.possibilities
-                    and Label.DELIMITER not in prev_token.possibilities):
+            if (Category.VIDEO_RESOLUTION not in prev_token.possibilities
+                    and Category.DELIMITER not in prev_token.possibilities):
                 break
-            if Label.VIDEO_RESOLUTION in prev_token.possibilities:
+            if Category.VIDEO_RESOLUTION in prev_token.possibilities:
                 video_resolution_tokens.append(prev_token)
         video_resolution_tokens.reverse()
         video_resolution_tokens.append(start_token)
         for next_token in tokens.loop_forward(start_token):
-            if Label.VIDEO_RESOLUTION not in next_token.possibilities:
+            if Category.VIDEO_RESOLUTION not in next_token.possibilities:
                 break
             video_resolution_tokens.append(next_token)
         return video_resolution_tokens
@@ -131,10 +131,10 @@ class VideoResolutionScoreRule(ScoreRule):
     def apply_in_bracket_rules(cls, start_token: Token, tokens: Tokens):
         potential_video_resolution_divider = True
         for prev_token in tokens.loop_backward(start_token):
-            if Label.BRACKET in prev_token.possibilities:
+            if Category.BRACKET in prev_token.possibilities:
                 for next_token in tokens.loop_forward(start_token):
-                    if Label.BRACKET in next_token.possibilities:
-                        start_token.possibilities[cls.descriptorType] += 0.25
+                    if Category.BRACKET in next_token.possibilities:
+                        start_token.possibilities[cls.descriptorType]["score"] += 0.25
                         break
                     # This could be video resolution divider (x) or information (p, i)
                     if (potential_video_resolution_divider
@@ -143,11 +143,11 @@ class VideoResolutionScoreRule(ScoreRule):
                         potential_video_resolution_divider = False
                         continue
 
-                    if (Label.DELIMITER not in next_token.possibilities
-                            and not Label.additional_video_information(next_token.possibilities)):
+                    if (Category.DELIMITER not in next_token.possibilities
+                            and not Category.additional_video_information(next_token.possibilities)):
                         break
 
-                start_token.possibilities[cls.descriptorType] += 0.25
+                start_token.possibilities[cls.descriptorType]["score"] += 0.25
                 break
-            if Label.DELIMITER not in prev_token.possibilities:
+            if Category.DELIMITER not in prev_token.possibilities:
                 break

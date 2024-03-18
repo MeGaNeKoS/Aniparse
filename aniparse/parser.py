@@ -1,15 +1,16 @@
 from __future__ import annotations
 
-import copy
+import difflib
 import logging
 import re
 import warnings
 from typing import List, Type
 
 from aniparse import WordListManager
+from aniparse.abstraction.KeywordBase import ElementEntry
 from aniparse.abstraction.ParserBase import AbstractParser, PossibilityRule
 from aniparse.abstraction.ScoreBase import Score
-from aniparse.element import Label, Metadata
+from aniparse.token_tags import Descriptor
 from aniparse.token import Tokens, Token
 from aniparse.tokenizer import Tokenizer
 
@@ -21,12 +22,15 @@ class BaseParser(AbstractParser):
                  filename: str,
                  word_list_manager: WordListManager,
                  possibility_rule: List[Type[PossibilityRule]] = None,
-                 score: Score = None):
+                 score: Score = None,
+                 similarity_token_threshold=0.9):
         self.tokens: Tokens = Tokenizer(filename).tokenize()
         self._filename = filename
         self.word_list_manager = word_list_manager
+        self.similarity_token_threshold = similarity_token_threshold
 
         self.possibility_rule: List[Type[PossibilityRule]] = possibility_rule or []
+        self.warn = []  # For debug purpose, what kind of warn that occur during parsing
 
         if score is None:
             self.score: Score = Score()
@@ -36,15 +40,15 @@ class BaseParser(AbstractParser):
         self.processed_entries = set()
 
     @staticmethod
-    def get_entry_id(word, entry):
+    def get_entry_id(token: Token, entry: ElementEntry):
         # Create a unique identifier for each entry, for example:
-        return f"{word}_{id(entry)}"
+        return f"{id(token)}_{id(entry)}"
 
-    def process_entry(self, word, tokens, entry):
+    def process_entry(self, word: str, tokens: list[Token], entry: ElementEntry):
         """Process a single entry for a word."""
 
-        entry_id = self.get_entry_id(word, entry)
-        self.process_categories(tokens, entry)
+        entry_id = self.get_entry_id(tokens[0], entry)
+        self.add_possibility(tokens, entry)
         if entry_id in self.processed_entries:
             return
         self.processed_entries.add(entry_id)
@@ -52,16 +56,17 @@ class BaseParser(AbstractParser):
         self.process_regex_matches(tokens[-1], entry)
         self.process_continuations(word, tokens, entry)
 
-    def process_categories(self, tokens, entry):
+    @staticmethod
+    def add_possibility(tokens: list[Token], entry: ElementEntry):
         """Process category sets of an entry."""
         for category_set in entry.category_set:
             for token in tokens:
                 token.add_possibility(category_set)
 
-    def process_regex_matches(self, token, entry):
+    def process_regex_matches(self, token: Token, entry: ElementEntry):
         """Process regex matches for a word."""
         for regex, group_possibilities in entry.regex_dict.items():
-            with warnings.catch_warnings(record=True) as w:
+            with warnings.catch_warnings(record=True) as warn:
                 for match in re.finditer(regex, self.filename, re.IGNORECASE):
                     if match.start() <= token.index < match.end():
                         for group_idx, possibilities in group_possibilities.items():
@@ -69,10 +74,11 @@ class BaseParser(AbstractParser):
                             matched_tokens = self.get_matched_tokens_range(matched_group_start, matched_group_end)
                             for target_token in matched_tokens:
                                 target_token.add_possibility(possibilities)
-                if w and any(issubclass(item.category, FutureWarning) for item in w):
+                if warn and any(issubclass(item.category, FutureWarning) for item in warn):
                     logger.warning(f'Warning from "{entry.word}", regex: "{regex}"')
+                    self.warn.append((f'Warning from "{entry.word}", regex: "{regex}"', warn))
 
-    def get_matched_tokens_range(self, start, end) -> List[Token]:
+    def get_matched_tokens_range(self, start: int, end: int) -> List[Token]:
         """Get tokens matched by the regex within a specific range."""
         matched_tokens = []
 
@@ -82,11 +88,13 @@ class BaseParser(AbstractParser):
 
         return matched_tokens
 
-    def process_continuations(self, word, tokens, entry):
+    def process_continuations(self, word: str, tokens: list[Token], entry: ElementEntry):
         """Process continuations of an entry for a word."""
         for continuation in entry.continuation_set:
             next_token = self.tokens.find_next(tokens[-1])
-            if next_token and next_token.content.upper() == continuation.upper():
+            if (next_token and
+                    difflib.SequenceMatcher(None, next_token.content.upper(),
+                                            continuation.upper()).quick_ratio() >= self.similarity_token_threshold):
                 combined_word = word + next_token.content
                 tokens.append(next_token)
                 for continuation_entry in self.word_list_manager.exists(combined_word):
@@ -96,7 +104,7 @@ class BaseParser(AbstractParser):
 class ParserProcessor(BaseParser):
     def assign_possibilities(self):
         for token in self.tokens:
-            # This part already correct, No need to check this
+            # This part already corrects, No need to check this
             for entry in self.word_list_manager.exists(token.content):
                 # token.token_entries.add(entry)
                 self.process_entry(token.content, [token], entry)
@@ -106,10 +114,10 @@ class ParserProcessor(BaseParser):
 
     def normalize_possibilities(self):
         for token in self.tokens:
-            for candidate in copy.copy(token.possibilities):
-                if isinstance(candidate, Metadata):
+            for candidate in token.possibilities.copy():
+                if isinstance(candidate, Descriptor):
                     token.remove_possibility(candidate)
-                    token.add_possibility(Metadata.to_label(candidate))
+                    token.add_possibility(Descriptor.to_label(candidate))
 
     def score_token_possibilities(self):
         for token in self.tokens:
@@ -126,5 +134,5 @@ class Parser(ParserProcessor):
             return None
 
         self.assign_possibilities()
-        self.normalize_possibilities()
+        # self.normalize_possibilities()
         self.score_token_possibilities()

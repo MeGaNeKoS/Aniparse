@@ -1,8 +1,8 @@
-from aniparse.element import Label
+from aniparse.token_tags import Descriptor
 from aniparse.abstraction.KeywordBase import ElementEntry
 
 context_dependent_prefix = [
-    ElementEntry('THE', {Label.CONTEXT_DEPENDENT}),
-    ElementEntry('PART', {Label.CONTEXT_DEPENDENT}),
-    ElementEntry("+", {Label.CONTEXT_DEPENDENT})
+    ElementEntry('THE', {Descriptor.CONTEXT_DEPENDENT}),
+    ElementEntry('PART', {Descriptor.CONTEXT_DEPENDENT}),
+    ElementEntry("+", {Descriptor.CONTEXT_DEPENDENT})
 ]

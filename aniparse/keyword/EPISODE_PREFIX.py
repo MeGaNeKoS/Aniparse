@@ -1,23 +1,23 @@
-from aniparse.element import Metadata
+from aniparse.token_tags import Descriptor
 from aniparse.abstraction.KeywordBase import ElementEntry
 
 episode_prefix = [
-    ElementEntry('EP', {Metadata.EPISODE_PREFIX}, regex_dict={r'EP\.?': {0: {Metadata.EPISODE_PREFIX}}}),
-    ElementEntry('EPS', {Metadata.EPISODE_PREFIX},
-                 regex_dict={r'EPS\.?': {0: {Metadata.EPISODE_PREFIX}}}),
-    ElementEntry('EPISODE', {Metadata.EPISODE_PREFIX},
-                 regex_dict={r'EPISODE\.?': {0: {Metadata.EPISODE_PREFIX}}}),
-    ElementEntry('EPISODES', {Metadata.EPISODE_PREFIX},
-                 regex_dict={r'EPISODES\.?': {0: {Metadata.EPISODE_PREFIX}}}),
-    ElementEntry('CAPITULO', {Metadata.EPISODE_PREFIX}),
-    ElementEntry('EPISODIO', {Metadata.EPISODE_PREFIX}),
-    ElementEntry('FOLGE', {Metadata.EPISODE_PREFIX}),
-    ElementEntry('E', {Metadata.EPISODE_PREFIX}),
+    ElementEntry('EP', {Descriptor.EPISODE}, regex_dict={r'EP\.?': {0: {Descriptor.EPISODE}}}),
+    ElementEntry('EPS', {Descriptor.EPISODE},
+                 regex_dict={r'EPS\.?': {0: {Descriptor.EPISODE}}}),
+    ElementEntry('EPISODE', {Descriptor.EPISODE},
+                 regex_dict={r'EPISODE\.?': {0: {Descriptor.EPISODE}}}),
+    ElementEntry('EPISODES', {Descriptor.EPISODE},
+                 regex_dict={r'EPISODES\.?': {0: {Descriptor.EPISODE}}}),
+    ElementEntry('CAPITULO', {Descriptor.EPISODE}),
+    ElementEntry('EPISODIO', {Descriptor.EPISODE}),
+    ElementEntry('FOLGE', {Descriptor.EPISODE}),
+    ElementEntry('E', {Descriptor.EPISODE}),
     ElementEntry('X', set(), regex_dict={r"(\d+)([\W_])?(X)([\W_])?(\d+)": {
-        1: {Metadata.SEQUENCE_NUMBER},
-        2: {Metadata.DELIMITER},
-        3: {Metadata.EPISODE_PREFIX},
-        4: {Metadata.DELIMITER},
-        5: {Metadata.SEQUENCE_NUMBER}
+        1: {Descriptor.SEQUENCE_NUMBER},
+        2: {Descriptor.DELIMITER},
+        3: {Descriptor.EPISODE},
+        4: {Descriptor.DELIMITER},
+        5: {Descriptor.SEQUENCE_NUMBER}
     }})
 ]

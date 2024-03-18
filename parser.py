@@ -3,17 +3,17 @@ import json
 from aniparse.parser import Parser
 from aniparse.abstraction.ScoreBase import Score
 from aniparse import default_word_list_manager
-from aniparse.rule.AssingPossibilities.NumberRule import NumberPossibilityRule
-from aniparse.rule.AssingPossibilities.ContextDependentExpansionRule import ContextDependentExpansionPossibilityRule
-from aniparse.rule.AssingPossibilities.ChecksumPlaceholderRule import ChecksumPlaceholderPossibilityRule
-from aniparse.rule.AssingPossibilities.ContextDelimiterRule import ContextDelimiterPossibilityRule
+from aniparse.rule.Possibilities.NumberRule import NumberPossibilityRule
+from aniparse.rule.Possibilities.ContextDependentExpansionRule import ContextDependentExpansionPossibilityRule
+from aniparse.rule.Possibilities.ChecksumPlaceholderRule import ChecksumPlaceholderPossibilityRule
+from aniparse.rule.Possibilities.ContextDelimiterRule import ContextDelimiterPossibilityRule
 from aniparse.rule.Scoring.SequenceNumberScoreRule import EpisodeNumberScore
-from aniparse.element import Label
+from aniparse.token_tags import Category
 from aniparse.rule.Scoring.FileIndexScoreRule import FileIndexRule
 
 score = Score()
-score.add_rule(Label.SEQUENCE_NUMBER, EpisodeNumberScore)
-score.add_rule(Label.FILE_INDEX, FileIndexRule)
+score.add_rule(Category.SEQUENCE_NUMBER, EpisodeNumberScore)
+score.add_rule(Category.FILE_INDEX, FileIndexRule)
 
 class ElementCategory(enum.Enum):
     ANIME_SEASON = 'anime_season'

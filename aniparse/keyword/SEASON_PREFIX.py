@@ -1,9 +1,9 @@
-from aniparse.element import Metadata
+from aniparse.token_tags import Descriptor
 from aniparse.abstraction.KeywordBase import ElementEntry
 
 season_prefix = [
-    ElementEntry('SAISON', {Metadata.SEASON_PREFIX}),
-    ElementEntry('SEASON', {Metadata.SEASON_PREFIX}),
-    ElementEntry('S', {Metadata.SEASON_PREFIX}),
-    ElementEntry("COUR", {Metadata.SEASON_PREFIX}),
+    ElementEntry('SAISON', {Descriptor.SEASON}),
+    ElementEntry('SEASON', {Descriptor.SEASON}),
+    ElementEntry('S', {Descriptor.SEASON}),
+    ElementEntry("COUR", {Descriptor.SEASON}),
 ]

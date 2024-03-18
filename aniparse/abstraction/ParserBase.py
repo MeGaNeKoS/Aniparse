@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import logging
 from abc import ABC, abstractmethod
 
@@ -12,7 +10,7 @@ logger = logging.getLogger(__name__)
 class PossibilityRule(ABC):
     @classmethod
     @abstractmethod
-    def apply(cls, parser: AbstractParser):
+    def apply(cls, parser: 'AbstractParser'):
         pass
 
 
