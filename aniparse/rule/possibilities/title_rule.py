@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from aniparse.core import constant
 from aniparse.core.constant import BASE_METADATA_LABELS
 from aniparse.abstraction.parser_base import PossibilityRule, AbstractParser

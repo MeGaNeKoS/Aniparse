@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import weakref
 from typing import Union, Iterator, Literal, List, Set, Dict, Optional
 

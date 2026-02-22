@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from aniparse.core import constant
 from aniparse.abstraction.parser_base import PossibilityRule, AbstractParser
 from aniparse.core.token_tags import Tag

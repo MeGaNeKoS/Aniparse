@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from math import gcd
 
 from aniparse.abstraction.score_base import ScoreRule
