@@ -1,9 +1,37 @@
 [build-system]
-requires = ["setuptools>=42.0", "wheel"]
+requires = ["setuptools>=64", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
 
-[tool.pytest.ini_options]
-addopts = "--cov=aniparse"
-testpaths = [
-    "tests",
+[project]
+name = "aniparse"
+dynamic = ["version"]
+description = "A probability-based anime filename parser"
+readme = "README.md"
+license = "MPL-2.0"
+requires-python = ">=3.7"
+authors = [
+    { name = "めがねこ", email = "neko@meganeko.dev" },
 ]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+keywords = ["anime", "filename parser"]
+
+[project.urls]
+Homepage = "https://github.com/MeGaNeKoS/aniparse"
+
+[tool.setuptools-scm]
+version_scheme = "guess-next-dev"
+local_scheme = "no-local-version"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

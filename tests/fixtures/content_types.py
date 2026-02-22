@@ -1,0 +1,252 @@
+from aniparse.output_schemas import VideoResolution, SequenceNumber, SequenceIdentifierNumber, SequenceRange, SeriesInfo, Metadata
+
+content_types = [
+    Metadata(
+        file_name="[Judas] Kimetsu no Yaiba - NCED02 (ep 19)",
+        release_group=[
+            "Judas"
+        ],
+        series=[
+            SeriesInfo(
+                title="Kimetsu no Yaiba",
+                episode=[
+                    SequenceNumber(
+                        number=19
+                    )
+                ],
+                content_type=[
+                    SequenceIdentifierNumber(
+                        identifier="NCED",
+                        number=2
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        file_name="[judas] heavy object - nced 01",
+        release_group=[
+            "judas"
+        ],
+        series=[
+            SeriesInfo(
+                title="heavy object",
+                content_type=[
+                    SequenceIdentifierNumber(
+                        identifier="nced",
+                        number=1
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        audio_term=[
+            "flac"
+        ],
+        file_checksum="327a2375",
+        file_name="[Coalgirls]_bakemonogatari_op4a_(1280x720_blu-ray_flac)_[327a2375]",
+        release_group=[
+            "Coalgirls"
+        ],
+        series=[
+            SeriesInfo(
+                title="bakemonogatari",
+                content_type=[
+                    SequenceIdentifierNumber(
+                        identifier="op",
+                        number=4,
+                        part="a"
+                    )
+                ]
+            )
+        ],
+        source=[
+            "blu-ray"
+        ],
+        video_resolution=[
+            VideoResolution(
+                video_height=720,
+                video_width=1280
+            )
+        ]
+    ),
+    Metadata(
+        file_name="[judas] black clover - ncop 10b - black catcher",
+        release_group=[
+            "judas"
+        ],
+        series=[
+            SeriesInfo(
+                title="black clover",
+                content_type=[
+                    SequenceIdentifierNumber(
+                        number=10,
+                        identifier="ncop",
+                        title="black catcher",
+                        part="b"
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        file_name="[judas] nogizaka haruka no himitsu - ova ncop",
+        release_group=[
+            "judas"
+        ],
+        series=[
+            SeriesInfo(
+                title="nogizaka haruka no himitsu",
+                type="ova",
+                content_type=[
+                    SequenceIdentifierNumber(
+                        identifier="ncop"
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        file_name="[judas] granblue fantasy - clean ending",
+        release_group=[
+            "judas"
+        ],
+        series=[
+            SeriesInfo(
+                title="granblue fantasy",
+                content_type=[
+                    SequenceIdentifierNumber(
+                        identifier="clean ending"
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        file_name="[AnimeRG] Witch Craft Works - EDv2 [1080p] [x265] [pseudo]",
+        release_group=[
+            "AnimeRG"
+        ],
+        series=[
+            SeriesInfo(
+                title="Witch Craft Works",
+                content_type=[
+                    SequenceIdentifierNumber(
+                        identifier="ED",
+                        release_version="2"
+                    )
+                ]
+            )
+        ],
+        video_resolution=[
+            VideoResolution(
+                video_height=1080,
+                scan_method="p"
+            )
+        ],
+        video_term=[
+            "x265"
+        ]
+    ),
+    Metadata(
+        audio_term=[
+            "aac"
+        ],
+        file_checksum="3b65d1e6",
+        file_name="[coalgirls]_toradora_ed2_(704x480_dvd_aac)_[3b65d1e6]",
+        release_group=[
+            "coalgirls"
+        ],
+        series=[
+            SeriesInfo(
+                title="toradora",
+                content_type=[
+                    SequenceIdentifierNumber(
+                        identifier="ed",
+                        number=2
+                    )
+                ]
+            )
+        ],
+        video_resolution=[
+            VideoResolution(
+                video_height=480,
+                video_width=704,
+            )
+        ],
+        source=[
+            "dvd"
+        ]
+    ),
+    Metadata(
+        file_checksum="ca57f300",
+        file_name="[asenshi] rozen maiden 3 - PV [ca57f300]",
+        release_group=[
+            "asenshi"
+        ],
+        series=[
+            SeriesInfo(
+                title="rozen maiden 3",
+                content_type=[
+                    SequenceIdentifierNumber(
+                        identifier="PV"
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        file_name="[fff] love live! the school idol movie - pv [d1a15d2c]",
+        file_checksum="d1a15d2c",
+        release_group=[
+            "fff"
+        ],
+        series=[
+            SeriesInfo(
+                title="love live! the school idol movie",
+                content_type=[
+                    SequenceIdentifierNumber(
+                        identifier="pv"
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        audio_term=[
+            "flac"
+        ],
+        file_name="[ane] yosuga no sora - ep01 preview (yorihime ver) [bdrip 1080p x264 flac]",
+        release_group=[
+            "ane"
+        ],
+        series=[
+            SeriesInfo(
+                title="yosuga no sora",
+                episode=[
+                    SequenceNumber(
+                        number=1
+                    )
+                ],
+                content_type=[
+                    SequenceIdentifierNumber(
+                        release_version="yorihime"
+                    )
+                ]
+            )
+        ],
+        source=[
+            "bdrip"
+        ],
+        video_resolution=[
+            VideoResolution(
+                video_height=1080,
+                scan_method="p"
+            )
+        ],
+        video_term=[
+            "x264"
+        ]
+    )
+]
