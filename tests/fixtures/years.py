@@ -1,0 +1,172 @@
+from aniparse.output_schemas import VideoResolution, SequenceNumber, SequenceIdentifierNumber, SequenceRange, SeriesInfo, Metadata
+
+years = [
+    Metadata(
+        audio_term=[
+            "dts-es"
+        ],
+        file_name="evangelion_1.11_you_are_(not)_alone_(2009)_[1080p,bluray,x264,dts-es]_-_thora",
+        release_group=[
+            "thora"
+        ],
+        series=[
+            SeriesInfo(
+                title="evangelion 1.11 you are (not) alone",
+                year=[
+                    SequenceNumber(
+                        number=2009
+                    )
+                ]
+            )
+        ],
+        source=[
+            "bluray",
+        ],
+        video_resolution=[
+            VideoResolution(
+                video_height=1080,
+                scan_method="p"
+            )
+        ],
+        video_term=[
+            "x264",
+        ]
+    ),
+    Metadata(
+        audio_term=[
+            "dts"
+        ],
+        file_name="gin'iro_no_kami_no_agito_(2006)_[1080p,bluray,x264,dts]_-_thora",
+        release_group=[
+            "thora"
+        ],
+        series=[
+            SeriesInfo(
+                title="gin'iro no kami no agito",
+                year=[
+                    SequenceNumber(
+                        number=2006
+                    )
+                ]
+            )
+        ],
+        video_resolution=[
+            VideoResolution(
+                video_height=1080,
+                scan_method="p"
+            )
+        ],
+        video_term=[
+            "x264"
+        ]
+    ),
+    Metadata(
+        audio_term=[
+            "flac",
+            "dts"
+        ],
+        file_name="howl's_moving_castle_(2004)_[1080p,bluray,flac,dts,x264]_-_thora v2",
+        release_group=[
+            "thora"
+        ],
+        release_version=[
+            "2"
+        ],
+        series=[
+            SeriesInfo(
+                title="howl's moving castle",
+                year=[
+                    SequenceNumber(
+                        number=2004
+                    )
+                ]
+            )
+        ],
+        video_resolution=[
+            VideoResolution(
+                video_height=1080,
+                scan_method="p"
+            )
+        ],
+        video_term=[
+            "x264"
+        ]
+    ),
+    Metadata(
+        audio_term=[
+            "ac3"
+        ],
+        file_name="[fb] crayon shin-chan movie 2 the secret of buri buri kingdom [divx5 ac3] 1994 [852x480] v2",
+        release_group=[
+            "fb"
+        ],
+        release_version=[
+            "2"
+        ],
+        series=[
+            SeriesInfo(
+                title="crayon shin-chan movie 2 the secret of buri buri kingdom",
+                year=[
+                    SequenceNumber(
+                        number=1994
+                    )
+                ]
+            )
+        ],
+        video_resolution=[
+            VideoResolution(
+                video_height=480,
+                video_width=852
+            )
+        ],
+        video_term=[
+            "divx5"
+        ]
+    ),
+    Metadata(
+        file_name="[lrl] 1001 nights (1998) [dvd]",
+        release_group=[
+            "lrl"
+        ],
+        series=[
+            SeriesInfo(
+                title="1001 nights",
+                year=[
+                    SequenceNumber(
+                        number=1998
+                    )
+                ]
+            )
+        ],
+        source=[
+            "dvd"
+        ]
+    ),
+    Metadata(
+        file_name="FAIRY TAIL (2014)",
+        series=[
+            SeriesInfo(
+                title="FAIRY TAIL",
+                year=[
+                    SequenceNumber(
+                        number=2014
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        file_name="Example Anime (TV) (2020)",
+        series=[
+            SeriesInfo(
+                title="Example Anime",
+                type="TV",
+                year=[
+                    SequenceNumber(
+                        number=2020
+                    )
+                ]
+            )
+        ]
+    )
+]

@@ -1,0 +1,540 @@
+from aniparse.output_schemas import VideoResolution, SequenceNumber, SequenceIdentifierNumber, SequenceRange, SeriesInfo, Metadata
+
+seasons = [
+    Metadata(
+        file_name="after war gundam x - 1x03 - my mount is fierce!",
+        series=[
+            SeriesInfo(
+                title="after war gundam x",
+                season=[
+                    SequenceNumber(
+                        number=1
+                    )
+                ],
+                episode=[
+                    SequenceNumber(
+                        number=3,
+                        title="my mount is fierce!"
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        file_name="attack on titan season 3",
+        series=[
+            SeriesInfo(
+                title="attack on titan",
+                season=[
+                    SequenceNumber(
+                        number=3
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        audio_term=[
+            "aac",
+            "5.1"
+        ],
+        file_name="ghost_in_the_shell_stand_alone_complex_2nd_gig_ep05v2_excavation_[720p,hdtv,x264,aac_5.1]_-_thora",
+        release_group=[
+            "thora"
+        ],
+        release_version=[
+            "2"
+        ],
+        series=[
+            SeriesInfo(
+                title="ghost in the shell stand alone complex 2nd gig",
+                episode=[
+                    SequenceNumber(
+                        number=5,
+                        release_version="2",
+                        title="excavation"
+                    )
+                ]
+            )
+        ],
+        video_resolution=[
+            VideoResolution(
+                video_height=720,
+                scan_method="p"
+            )
+        ],
+        video_term=[
+            "x264"
+        ]
+    ),
+    Metadata(
+        file_name="hayate no gotoku 2nd season 24 (blu-ray 1080p) [chihiro]",
+        release_group=[
+            "chihiro"
+        ],
+        series=[
+            SeriesInfo(
+                title="hayate no gotoku",
+                season=[
+                    SequenceNumber(
+                        number=2
+                    )
+                ],
+                episode=[
+                    SequenceNumber(
+                        number=24
+                    )
+                ]
+            )
+        ],
+        source=[
+            "blu-ray"
+        ],
+        video_resolution=[
+            VideoResolution(
+                video_height=1080,
+                scan_method="p"
+            )
+        ]
+    ),
+    Metadata(
+        file_name="mobile_suit_gundam_00_season_2_ep07_a_reunion_and_a_parting_[1080p,bluray,x264]_-_thora",
+        release_group=[
+            "thora"
+        ],
+        series=[
+            SeriesInfo(
+                title="mobile suit gundam 00",
+                season=[
+                    SequenceNumber(
+                        number=2
+                    )
+                ],
+                episode=[
+                    SequenceNumber(
+                        number=7,
+                        title="a reunion and a parting"
+                    )
+                ]
+            )
+        ],
+        source=[
+            "bluray"
+        ],
+        video_resolution=[
+            VideoResolution(
+                video_height=1080,
+                scan_method="p"
+            )
+        ],
+        video_term=[
+            "x264"
+        ]
+    ),
+    Metadata(
+        file_name="noragami - s02e06 - what must be done [episode 6]",
+        series=[
+            SeriesInfo(
+                title="noragami",
+                season=[
+                    SequenceNumber(
+                        number=2
+                    )
+                ],
+                episode=[
+                    SequenceNumber(
+                        number=6,
+                        title="what must be done"
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        file_checksum="bd841253",
+        file_name="ookiku furikabutte s2 - 09 (central anime) [bd841253]",
+        release_group=[
+            "central anime"
+        ],
+        series=[
+            SeriesInfo(
+                title="ookiku furikabutte",
+                season=[
+                    SequenceNumber(
+                        number=2
+                    )
+                ],
+                episode=[
+                    SequenceNumber(
+                        number=9
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        file_name="the irregular at magic high school - s01e01- enrollment part i",
+        series=[
+            SeriesInfo(
+                title="the irregular at magic high school",
+                season=[
+                    SequenceNumber(
+                        number=1
+                    )
+                ],
+                episode=[
+                    SequenceNumber(
+                        number=1,
+                        title="enrollment part i"
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        file_name="toradora! s01e03-your song",
+        series=[
+            SeriesInfo(
+                title="toradora!",
+                season=[
+                    SequenceNumber(
+                        number=1
+                    )
+                ],
+                episode=[
+                    SequenceNumber(
+                        number=3,
+                        title="your song"
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        file_name="[(´• ω •`)] nintama rantarou - s23e1821 - buddhist priest-sama is a ninja",
+        release_group=[
+            "(´• ω •`)"
+        ],
+        series=[
+            SeriesInfo(
+                title="nintama rantarou",
+                season=[
+                    SequenceNumber(
+                        number=23
+                    )
+                ],
+                episode=[
+                    SequenceNumber(
+                        number=1821,
+                        title="buddhist priest-sama is a ninja"
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        audio_term=[
+            "aac"
+        ],
+        file_checksum="bb7c6531",
+        file_name="[0x539] somali and the forest spirit - s01e01 (web 1080p hi10p aac) [bb7c6531]",
+        release_group=[
+            "0x539"
+        ],
+        series=[
+            SeriesInfo(
+                title="somali and the forest spirit",
+                season=[
+                    SequenceNumber(
+                        number=1
+                    )
+                ],
+                episode=[
+                    SequenceNumber(
+                        number=1
+                    )
+                ]
+            )
+        ],
+        source=[
+            "web"
+        ],
+        video_resolution=[
+            VideoResolution(
+                video_height=1080,
+                scan_method="p"
+            )
+        ],
+        video_term=[
+            "hi10p"
+        ]
+    ),
+    Metadata(
+        audio_term=[
+            "multi-audio"
+        ],
+        file_checksum="24b349d4",
+        file_name="[dragsterps] devilman crybaby s01e04 [720p] [multi-audio] [multi-subs] [24b349d4]",
+        release_group=[
+            "dragsterps"
+        ],
+        series=[
+            SeriesInfo(
+                title="devilman crybaby",
+                season=[
+                    SequenceNumber(
+                        number=1
+                    )
+                ],
+                episode=[
+                    SequenceNumber(
+                        number=4
+                    )
+                ]
+            )
+        ],
+        subs_term=[
+            "multi-subs"
+        ],
+        video_resolution=[
+            VideoResolution(
+                video_height=720,
+                scan_method="p"
+            )
+        ]
+    ),
+    Metadata(
+        file_checksum="bd00f464",
+        file_name="[ember] natsu no arashi! - s01e01-playback part 2 [bd00f464]",
+        release_group=[
+            "ember"
+        ],
+        series=[
+            SeriesInfo(
+                title="natsu no arashi!",
+                season=[
+                    SequenceNumber(
+                        number=1
+                    )
+                ],
+                episode=[
+                    SequenceNumber(
+                        number=1,
+                        title="playback part 2"
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        file_name="[horriblesubs] mob psycho 100 s2 - 07 [1080p]",
+        release_group=[
+            "horriblesubs"
+        ],
+        series=[
+            SeriesInfo(
+                title="mob psycho 100",
+                season=[
+                    SequenceNumber(
+                        number=2
+                    )
+                ],
+                episode=[
+                    SequenceNumber(
+                        number=7
+                    )
+                ]
+            )
+        ],
+        video_resolution=[
+            VideoResolution(
+                video_height=1080,
+                scan_method="p"
+            )
+        ]
+    ),
+    Metadata(
+        file_name="[judas] aharen-san wa hakarenai - s01e06v2",
+        release_group=[
+            "judas"
+        ],
+        series=[
+            SeriesInfo(
+                title="aharen-san wa hakarenai",
+                season=[
+                    SequenceNumber(
+                        number=1
+                    )
+                ],
+                episode=[
+                    SequenceNumber(
+                        number=6,
+                        release_version="2"
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        file_name="[judas] grisaia no kajitsu - s01s02",
+        release_group=[
+            "judas"
+        ],
+        series=[
+            SeriesInfo(
+                title="grisaia no kajitsu",
+                season=[
+                    SequenceNumber(
+                        number=1
+                    ),
+                    SequenceNumber(
+                        number=2
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        file_name="[judas] one punch man - s01ova02",
+        release_group=[
+            "judas"
+        ],
+        series=[
+            SeriesInfo(
+                title="one punch man",
+                type="ova",
+                season=[
+                    SequenceNumber(
+                        number=1
+                    )
+                ],
+                episode=[
+                    SequenceNumber(
+                        number=2
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        file_name="[judas] one-punch man season 1 ova - 05",
+        release_group=[
+            "judas"
+        ],
+        series=[
+            SeriesInfo(
+                title="one-punch man",
+                type="ova",
+                season=[
+                    SequenceNumber(
+                        number=1
+                    )
+                ],
+                episode=[
+                    SequenceNumber(
+                        number=5
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        file_name="[sfw]_queen's_blade_s2",
+        release_group=[
+            "sfw"
+        ],
+        series=[
+            SeriesInfo(
+                title="queen's blade",
+                season=[
+                    SequenceNumber(
+                        number=2
+                    )
+                ]
+            )
+        ]
+    ),
+    Metadata(
+        file_name="[zza] nanatsu no taizai - s03 - kamigami no gekirin - 21 [1080p.x265]",
+        release_group=[
+            "zza"
+        ],
+        series=[
+            SeriesInfo(
+                title="nanatsu no taizai",
+                season=[
+                    SequenceNumber(
+                        number=3,
+                        title="kamigami no gekirin"
+                    )
+                ],
+                episode=[
+                    SequenceNumber(
+                        number=21
+                    )
+                ]
+            )
+        ],
+        video_resolution=[
+            VideoResolution(
+                video_height=1080
+            )
+        ],
+        video_term=[
+            "x265"
+        ]
+    ),
+    Metadata(
+        audio_term=[
+            "FLAC",
+            "2.0",
+            "Dual Audio",
+        ],
+        file_name="A.Certain.Scientific.Railgun.S02.1080p-Hi10p.BluRay.FLAC2.0.x264-CTR (English Dubbed Dual Audio)",
+        language=[
+            "English"
+        ],
+        series=[
+            SeriesInfo(
+                title="A Certain Scientific Railgun",
+                season=[
+                    SequenceNumber(
+                        number=2
+                    )
+                ]
+            )
+        ],
+        subs_term=[
+            "Dubbed"
+        ],
+        source=[
+            "BluRay"
+        ],
+        video_resolution=[
+            VideoResolution(
+                video_height=1080,
+                scan_method="p"
+            )
+        ],
+        video_term=[
+            "Hi10p",
+            "x264"
+        ]
+    ),
+    Metadata(
+        file_name="[judas] amanchu! s1 - ending",
+        release_group=[
+            "judas"
+        ],
+        series=[
+            SeriesInfo(
+                title="amanchu!",
+                season=[
+                    SequenceNumber(
+                        number=1
+                    )
+                ]
+            )
+        ]
+    )
+]
