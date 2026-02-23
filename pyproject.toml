@@ -28,9 +28,7 @@ keywords = ["anime", "filename parser"]
 [project.urls]
 Homepage = "https://github.com/MeGaNeKoS/aniparse"
 
-[tool.setuptools-scm]
-version_scheme = "guess-next-dev"
-local_scheme = "no-local-version"
+[tool.setuptools_scm]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
